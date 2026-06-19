@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37216.2 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ohana.client", "ohana.client\ohana.client.esproj", "{B1B7DF80-5197-EEAF-2E45-C5838747FBFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ohana.Server", "Ohana.Server\Ohana.Server.csproj", "{527D0C3B-B8F3-4ED4-8E8C-F4FD40B25BAD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B1B7DF80-5197-EEAF-2E45-C5838747FBFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1B7DF80-5197-EEAF-2E45-C5838747FBFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1B7DF80-5197-EEAF-2E45-C5838747FBFE}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B1B7DF80-5197-EEAF-2E45-C5838747FBFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1B7DF80-5197-EEAF-2E45-C5838747FBFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1B7DF80-5197-EEAF-2E45-C5838747FBFE}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{527D0C3B-B8F3-4ED4-8E8C-F4FD40B25BAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{527D0C3B-B8F3-4ED4-8E8C-F4FD40B25BAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{527D0C3B-B8F3-4ED4-8E8C-F4FD40B25BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{527D0C3B-B8F3-4ED4-8E8C-F4FD40B25BAD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8B490DC2-DA4A-430B-A4AD-0F1092168755}
+	EndGlobalSection
+EndGlobal
