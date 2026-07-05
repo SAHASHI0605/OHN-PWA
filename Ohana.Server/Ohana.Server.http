@@ -1,6 +1,5 @@
-@Ohana.Server_HostAddress = http://localhost:5051
+@Ohana.Server_HostAddress = https://localhost:7090
 
-GET {{Ohana.Server_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
+### Health Check
+GET {{Ohana.Server_HostAddress}}/api/health
+Accept: text/plain
