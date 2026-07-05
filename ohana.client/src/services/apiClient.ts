@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://localhost:7090/api';
+    const API_BASE_URL = 'https://localhost:7090/api';
 
 export const apiClient = async <TResponse>(
     endpoint: string,
@@ -7,7 +7,7 @@ export const apiClient = async <TResponse>(
     const token = localStorage.getItem('access_token');
 
     const headers = new Headers(options.headers);
-
+    
     headers.set('Content-Type', 'application/json');
 
     if (token) {

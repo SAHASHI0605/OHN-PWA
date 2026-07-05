@@ -1,6 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Ohana.Server.Repositories;
+using Ohana.Server.Repositories.Interfaces;
+using Ohana.Server.Services;
+using Ohana.Server.Services.Interfaces;
+using Ohana.Server.Utilities;
 using System.Text;
+using Ohana.Server.Infrastructure.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +45,12 @@ builder.Services
     });
 
 builder.Services.AddAuthorization();
+
+builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
+
+builder.Services.AddScoped<IStaffRepository, StaffRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<JwtTokenGenerator>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

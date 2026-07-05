@@ -30,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
     <Folder Include="Dao\" />
     <Folder Include="Common\" />
     <Folder Include="xml\" />

@@ -1,6 +1,6 @@
-namespace Ohana.Server.Models.Auth;
+namespace Ohana.Server.DTOs.Auth;
 
-public class LoginRequest
+public class LoginRequestDto
 {
     public string EmployeeNumber { get; set; } = string.Empty;
 
