@@ -10,12 +10,9 @@
     <UserSecretsId>4cc7648d-eff8-47a5-8d4b-6a148f1b1e8c</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\components\" />
-    <Folder Include="src\pages\" />
     <Folder Include="src\hooks\" />
     <Folder Include="src\models\" />
     <Folder Include="src\db\" />
-    <Folder Include="src\routes\" />
     <Folder Include="src\types\" />
   </ItemGroup>
 </Project>

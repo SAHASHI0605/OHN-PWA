@@ -1,23 +1,16 @@
-import { useEffect, useState } from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from './auth/AuthProvider';
+import { AppRoutes } from './routes/AppRoutes';
 import './App.css';
-import { healthService } from './services/healthService';
 
 function App() {
-  const [apiStatus, setApiStatus] = useState<string>('確認中...');
-
-  useEffect(() => {
-    healthService
-      .getStatus()
-      .then((status) => setApiStatus(status))
-      .catch(() => setApiStatus('API接続エラー'));
-  }, []);
-
-  return (
-    <>
-      <h1>Ohana</h1>
-      <p>API Status: {apiStatus}</p>
-    </>
-  );
+    return (
+        <AuthProvider>
+            <BrowserRouter>
+                <AppRoutes />
+            </BrowserRouter>
+        </AuthProvider>
+    );
 }
 
 export default App;
