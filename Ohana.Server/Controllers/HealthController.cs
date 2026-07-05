@@ -9,6 +9,10 @@ public class HealthController : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        return Content("Ohana API Running", "text/plain");
+        return Ok(new
+        {
+            status = "OK",
+            message = "Ohana API Running"
+        });
     }
 }

@@ -1,8 +1,10 @@
 import { apiClient } from './apiClient';
 
-export const healthService = {
-  getStatus: async (): Promise<string> => {
-    const response = await apiClient.get<string>('/health');
-    return response.data;
-  },
+export type HealthResponse = {
+    status: string;
+    message: string;
+};
+
+export const getHealthAsync = async () => {
+    return apiClient<HealthResponse>('/health');
 };
