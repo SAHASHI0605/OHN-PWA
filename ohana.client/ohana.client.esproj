@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.2752196">
+﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.2752196">
   <PropertyGroup>
     <StartupCommand>npm run dev</StartupCommand>
     <JavaScriptTestRoot>src\</JavaScriptTestRoot>
@@ -7,6 +7,7 @@
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
     <!-- Folder where production build objects will be placed -->
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
+    <UserSecretsId>4cc7648d-eff8-47a5-8d4b-6a148f1b1e8c</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\components\" />

@@ -6,7 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <SpaRoot>..\ohana.client</SpaRoot>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
-    <SpaProxyServerUrl>https://localhost:60915</SpaProxyServerUrl>
+    <SpaProxyServerUrl>http://localhost:5173</SpaProxyServerUrl>
+    <UserSecretsId>008b56eb-a1fd-476c-a7e2-2ff51e5eab27</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
