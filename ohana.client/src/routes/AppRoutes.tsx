@@ -11,6 +11,9 @@ import { ContactPage } from '../pages/ContactPage';
 import { SettingPage } from '../pages/SettingPage';
 import { LoginPage } from '../pages/LoginPage';
 import { MenuPage } from '../pages/MenuPage';
+import FloorSelectPage from '../pages/FloorSelectPage';
+import FirstFloorResidentSelectPage
+    from '../pages/FirstFloorResidentSelectPage';
 
 import { ProtectedRoute } from '../auth/ProtectedRoute';
 
@@ -27,6 +30,24 @@ export const AppRoutes = () => {
                 element={
                     <ProtectedRoute>
                         <MenuPage />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path="/residents/floors"
+                element={
+                    <ProtectedRoute>
+                        <FloorSelectPage />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path="/residents/floors/1"
+                element={
+                    <ProtectedRoute>
+                        <FirstFloorResidentSelectPage />
                     </ProtectedRoute>
                 }
             />

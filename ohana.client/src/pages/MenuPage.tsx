@@ -32,7 +32,7 @@ const menuItems: MenuItem[] = [
             'バイタル、食事、入浴、排泄、申し送りなどの日常記録を入力します。',
         actionLabel: '記録を開始',
         icon: '📝',
-        path: '/records',
+        path: '/residents/floors',
         primary: true,
     },
     {
@@ -179,19 +179,17 @@ export const MenuPage = () => {
     const handleMenuClick = (
         menuItem: MenuItem
     ) => {
-        /*
-         * 遷移先画面が完成したら、
-         * setMessageを削除してnavigateを有効にします。
-         */
+        if (
+            menuItem.id === 'records'
+            && menuItem.path
+        ) {
+            navigate(menuItem.path);
+            return;
+        }
 
         setMessage(
             `${menuItem.title}は現在準備中です。`
         );
-
-        // 遷移先画面作成後に有効化
-        // if (menuItem.path) {
-        //     navigate(menuItem.path);
-        // }
     };
 
     const handleLogout = () => {

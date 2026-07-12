@@ -1,0 +1,599 @@
+.first-floor-page {
+    min-width: 1024px;
+    min-height: 100vh;
+    padding: 18px;
+    font-family: "Yu Gothic UI", "Meiryo", sans-serif;
+    color: #1d271d;
+    background: radial-gradient( circle at 8% 8%, rgba(137, 197, 59, 0.18), transparent 24% ), radial-gradient( circle at 92% 14%, rgba(32, 163, 158, 0.13), transparent 23% ), linear-gradient( 135deg, #f8fbf2 0%, #eef6e3 52%, #f9fcf4 100% );
+}
+
+    .first-floor-page * {
+        box-sizing: border-box;
+    }
+
+.first-floor-shell {
+    position: relative;
+    width: min(1480px, 100%);
+    min-height: calc(100vh - 36px);
+    margin: 0 auto;
+    overflow: hidden;
+    border: 1px solid rgba(116, 181, 44, 0.2);
+    border-radius: 26px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 18px 50px rgba(72, 112, 29, 0.17);
+}
+
+/* ヘッダー */
+
+.first-floor-header {
+    min-height: 104px;
+    padding: 18px 26px;
+    display: grid;
+    grid-template-columns: minmax(250px, 390px) 1fr auto;
+    gap: 22px;
+    align-items: center;
+    border-bottom: 1px solid #e5edd9;
+    background: rgba(255, 255, 255, 0.88);
+}
+
+.first-floor-brand {
+    min-height: 66px;
+    padding: 9px 16px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #e9f0df;
+    border-radius: 17px;
+    background: #ffffff;
+    box-shadow: 0 9px 22px rgba(96, 132, 39, 0.07);
+}
+
+    .first-floor-brand img {
+        display: block;
+        width: 100%;
+        max-width: 310px;
+        height: auto;
+    }
+
+.first-floor-title__tag {
+    display: inline-block;
+    margin-bottom: 5px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    color: #58751d;
+    background: #e7f3d3;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.first-floor-title h1 {
+    margin: 0;
+    font-size: clamp(25px, 2.3vw, 34px);
+    line-height: 1.15;
+}
+
+.first-floor-title p {
+    margin: 6px 0 0;
+    color: #697568;
+    font-size: 13px;
+}
+
+.first-floor-account {
+    display: grid;
+    justify-items: end;
+    gap: 8px;
+}
+
+.first-floor-clock {
+    color: #66705f;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.first-floor-account__row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.first-floor-staff {
+    min-height: 42px;
+    padding: 7px 12px 7px 8px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border: 1px solid #deebcd;
+    border-radius: 13px;
+    background: #fbfdf8;
+}
+
+.first-floor-staff__avatar {
+    width: 31px;
+    height: 31px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    color: #ffffff;
+    background: linear-gradient( 135deg, #74b52c, #1fa39e );
+}
+
+.first-floor-staff__text {
+    display: grid;
+    gap: 1px;
+}
+
+    .first-floor-staff__text strong {
+        font-size: 13px;
+    }
+
+    .first-floor-staff__text span {
+        color: #6f796a;
+        font-size: 10px;
+    }
+
+.first-floor-header-button {
+    min-height: 42px;
+    padding: 0 14px;
+    border: 1px solid #d5e2c3;
+    border-radius: 11px;
+    color: #46523f;
+    background: #ffffff;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+/* メイン */
+
+.first-floor-content {
+    padding: 20px 24px 108px;
+}
+
+.first-floor-toolbar {
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+    .first-floor-toolbar h2 {
+        margin: 0 0 4px;
+        font-size: 20px;
+    }
+
+    .first-floor-toolbar p {
+        margin: 0;
+        color: #697568;
+        font-size: 12px;
+    }
+
+.first-floor-legend {
+    padding: 9px 12px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    border: 1px solid #e2ead7;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.85);
+}
+
+    .first-floor-legend span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #596556;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .first-floor-legend i {
+        width: 14px;
+        height: 14px;
+        border: 1px solid #cbd8c1;
+        border-radius: 4px;
+        background: #ffffff;
+    }
+
+        .first-floor-legend i.selected {
+            border-color: #74b52c;
+            background: #e3f4c9;
+        }
+
+        .first-floor-legend i.facility {
+            background: #f1f5ed;
+        }
+
+/* 見取り図 */
+
+.first-floor-map-card {
+    padding: 14px;
+    border: 1px solid #dbe7cc;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 12px 28px rgba(72, 112, 29, 0.08);
+}
+
+.first-floor-map-heading {
+    margin: 0 2px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .first-floor-map-heading strong {
+        color: #4f711f;
+        font-size: 22px;
+    }
+
+    .first-floor-map-heading > div {
+        min-width: 80px;
+        color: #426a36;
+        text-align: center;
+        font-weight: 900;
+    }
+
+    .first-floor-map-heading span {
+        display: block;
+        margin-top: -3px;
+        color: #1fa39e;
+        font-size: 19px;
+    }
+
+.first-floor-map {
+    min-height: 430px;
+    display: grid;
+    grid-template-columns: minmax(760px, 5.4fr) minmax(290px, 2fr);
+    gap: 8px;
+}
+
+.first-floor-residential-zone {
+    min-width: 0;
+    display: grid;
+    grid-template-rows: 1fr 30px 1fr;
+    gap: 7px;
+}
+
+.first-floor-room-row {
+    min-width: 0;
+    display: grid;
+    gap: 5px;
+}
+
+.first-floor-room-row--top {
+    grid-template-columns: repeat( 13, minmax(55px, 1fr) );
+}
+
+.first-floor-room-row--bottom {
+    grid-template-columns: repeat( 7, minmax(82px, 1fr) ) 32px 62px 82px;
+}
+
+.first-floor-room {
+    min-height: 150px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 2px solid #d9e5ce;
+    border-radius: 12px;
+    color: inherit;
+    background: #ffffff;
+    text-align: left;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(72, 112, 29, 0.05);
+    transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+    .first-floor-room:hover,
+    .first-floor-room:focus-visible {
+        transform: translateY(-2px);
+        border-color: #9fc96a;
+        outline: none;
+        box-shadow: 0 9px 18px rgba(72, 112, 29, 0.13);
+    }
+
+.first-floor-room--selected {
+    border-color: #74b52c;
+    background: #e3f4c9;
+    box-shadow: 0 0 0 3px rgba(116, 181, 44, 0.15), 0 10px 20px rgba(72, 112, 29, 0.15);
+}
+
+.first-floor-room__number {
+    padding: 6px;
+    border-bottom: 1px solid #e2e9dd;
+    color: #52634e;
+    background: #f6f9f3;
+    font-size: 12px;
+    font-weight: 900;
+    text-align: center;
+}
+
+.first-floor-room--selected
+.first-floor-room__number {
+    color: #3f6513;
+    background: #d6edb5;
+}
+
+.first-floor-room__resident {
+    flex: 1;
+    padding: 9px 6px 7px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    text-align: center;
+}
+
+    .first-floor-room__resident strong {
+        display: grid;
+        gap: 4px;
+        font-size: clamp(11px, 0.95vw, 14px);
+        line-height: 1.35;
+    }
+
+    .first-floor-room__resident small {
+        color: #748071;
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+.first-floor-corridor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d9e2d2;
+    border-radius: 8px;
+    color: #7b8676;
+    background: repeating-linear-gradient( 90deg, #f7faf4, #f7faf4 18px, #f2f6ee 18px, #f2f6ee 36px );
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+}
+
+.first-floor-facility {
+    min-height: 80px;
+    padding: 8px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #d6dfd0;
+    border-radius: 10px;
+    color: #5f6b5c;
+    background: #f1f5ed;
+    font-size: 11px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.first-floor-utility-stack {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
+}
+
+/* 右側共有部分 */
+
+.first-floor-right-complex {
+    display: grid;
+    grid-template-columns: minmax(250px, 1.55fr) minmax(145px, 0.75fr);
+    gap: 7px;
+}
+
+.first-floor-shared-zone {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 1.05fr 0.8fr 1.1fr;
+    grid-template-rows: 1fr 0.85fr 1fr;
+    gap: 6px;
+}
+
+.first-floor-kitchen {
+    grid-column: 1 / 3;
+    grid-row: 1;
+}
+
+.first-floor-wc {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.first-floor-bath {
+    grid-column: 1;
+    grid-row: 2 / 4;
+}
+
+.first-floor-hall {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.first-floor-office {
+    grid-column: 3;
+    grid-row: 2 / 4;
+}
+
+.first-floor-machine-bath {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+.first-floor-dining-hall {
+    min-height: 100%;
+    display: grid;
+    place-items: center;
+    border: 1px solid #cbdcc8;
+    border-radius: 14px;
+    color: #3d6348;
+    background: linear-gradient( rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.52) ), repeating-linear-gradient( 45deg, #eaf4e8 0, #eaf4e8 12px, #e4f0e1 12px, #e4f0e1 24px );
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    writing-mode: vertical-rl;
+}
+
+/* 画面下部の選択欄 */
+
+.first-floor-selection-bar {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    min-height: 88px;
+    padding: 14px 24px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 18px;
+    align-items: center;
+    border-top: 1px solid #dce7d1;
+    background: rgba(250, 252, 247, 0.97);
+    box-shadow: 0 -10px 28px rgba(61, 96, 29, 0.12);
+}
+
+.first-floor-selection-copy {
+    min-width: 0;
+    display: grid;
+    gap: 3px;
+}
+
+    .first-floor-selection-copy span {
+        color: #758071;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+    }
+
+    .first-floor-selection-copy strong {
+        overflow: hidden;
+        color: #31432c;
+        font-size: 20px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .first-floor-selection-copy small {
+        color: #778273;
+        font-size: 11px;
+    }
+
+.first-floor-selection-actions {
+    display: flex;
+    gap: 10px;
+}
+
+    .first-floor-selection-actions button {
+        min-height: 52px;
+        padding: 0 20px;
+        border-radius: 14px;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+.first-floor-clear-button {
+    border: 1px solid #cdd9c4;
+    color: #52604e;
+    background: #ffffff;
+}
+
+.first-floor-confirm-button {
+    min-width: 210px;
+    border: 0;
+    color: #ffffff;
+    background: linear-gradient( 135deg, #74b52c, #55a81e );
+    box-shadow: 0 9px 18px rgba(89, 143, 32, 0.23);
+}
+
+.first-floor-selection-actions button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* 2名部屋の選択ダイアログ */
+
+.first-floor-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    padding: 24px;
+    display: grid;
+    place-items: center;
+    background: rgba(28, 39, 27, 0.42);
+    backdrop-filter: blur(4px);
+}
+
+.first-floor-dialog {
+    width: min(520px, 100%);
+    padding: 24px;
+    border: 1px solid #dce7d1;
+    border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 24px 60px rgba(39, 60, 29, 0.24);
+}
+
+    .first-floor-dialog h2 {
+        margin: 0 0 6px;
+        font-size: 24px;
+    }
+
+    .first-floor-dialog p {
+        margin: 0 0 18px;
+        color: #6d7869;
+        font-size: 13px;
+    }
+
+.first-floor-resident-list {
+    display: grid;
+    gap: 10px;
+}
+
+    .first-floor-resident-list button {
+        min-height: 58px;
+        padding: 0 18px;
+        border: 1px solid #d9e5ce;
+        border-radius: 14px;
+        color: #30402d;
+        background: #f9fcf5;
+        text-align: left;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+        .first-floor-resident-list button:hover,
+        .first-floor-resident-list button:focus-visible {
+            border-color: #9fc96a;
+            outline: none;
+            background: #eef8df;
+        }
+
+.first-floor-dialog__footer {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+    .first-floor-dialog__footer button {
+        min-height: 44px;
+        padding: 0 18px;
+        border: 1px solid #d0dcc8;
+        border-radius: 12px;
+        color: #52604e;
+        background: #ffffff;
+        font-weight: 800;
+        cursor: pointer;
+    }
+
+@media (max-width: 1120px) {
+    .first-floor-header {
+        grid-template-columns: 300px 1fr;
+    }
+
+    .first-floor-account {
+        grid-column: 1 / -1;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .first-floor-map {
+        grid-template-columns: minmax(700px, 5fr) minmax(255px, 1.8fr);
+    }
+}
