@@ -1,27 +1,160 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginAsync } from '../auth/authService';
 import { useAuth } from '../auth/useAuth';
+import {
+    getLoginStaffOptionsAsync,
+    type StaffOption,
+} from '../services/staffService';
 import kaizuLogo from '../assets/kaizu-logo.png';
 
-const staffOptions = [
-    { employeeNumber: '1', name: '佐橋 輝彦' },
+const weekdays = [
+    '日',
+    '月',
+    '火',
+    '水',
+    '木',
+    '金',
+    '土',
 ];
+
+const formatDateTime = (
+    date: Date
+): string => {
+    const year = date.getFullYear();
+
+    const month = String(
+        date.getMonth() + 1
+    ).padStart(2, '0');
+
+    const day = String(
+        date.getDate()
+    ).padStart(2, '0');
+
+    const weekday =
+        weekdays[date.getDay()];
+
+    const hour = String(
+        date.getHours()
+    ).padStart(2, '0');
+
+    const minute = String(
+        date.getMinutes()
+    ).padStart(2, '0');
+
+    return `${year}/${month}/${day}(${weekday}) ${hour}:${minute}`;
+};
 
 export const LoginPage = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const [employeeNumber, setEmployeeNumber] = useState('1');
+    const [staffOptions, setStaffOptions] =
+        useState<StaffOption[]>([]);
+
+    const [employeeNumber, setEmployeeNumber] =
+        useState('');
+
+    const [isStaffLoading, setIsStaffLoading] =
+        useState(true);
+
+    const [staffLoadError, setStaffLoadError] =
+        useState('');
+
     const [password, setPassword] = useState('');
     const [rememberStaff, setRememberStaff] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
-    const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    useEffect(() => {
+        const loadStaffOptions = async () => {
+            setIsStaffLoading(true);
+            setStaffLoadError('');
+
+            try {
+                const options =
+                    await getLoginStaffOptionsAsync();
+
+                setStaffOptions(options);
+
+                if (options.length === 0) {
+                    setEmployeeNumber('');
+                    setStaffLoadError(
+                        'ログイン可能な担当者が登録されていません。'
+                    );
+                    return;
+                }
+
+                const lastEmployeeNumber =
+                    localStorage.getItem(
+                        'last_employee_number'
+                    );
+
+                const rememberedStaffExists =
+                    options.some(
+                        (staff) =>
+                            staff.employeeNumber ===
+                            lastEmployeeNumber
+                    );
+
+                if (
+                    lastEmployeeNumber &&
+                    rememberedStaffExists
+                ) {
+                    setEmployeeNumber(
+                        lastEmployeeNumber
+                    );
+                } else {
+                    setEmployeeNumber(
+                        options[0].employeeNumber
+                    );
+                }
+            } catch {
+                setStaffOptions([]);
+                setEmployeeNumber('');
+                setStaffLoadError(
+                    '担当者一覧を取得できませんでした。'
+                );
+            } finally {
+                setIsStaffLoading(false);
+            }
+        };
+
+        void loadStaffOptions();
+    }, []);
+
+    useEffect(() => {
+        const timerId = window.setInterval(() => {
+            setCurrentDateTime(new Date());
+        }, 1000);
+
+        return () => {
+            window.clearInterval(timerId);
+        };
+    }, []);
+
+    const handleLogin = async (
+        event: React.FormEvent<HTMLFormElement>
+    ) => {
         event.preventDefault();
 
         setErrorMessage('');
+
+        if (!employeeNumber) {
+            setErrorMessage(
+                '担当者を選択してください。'
+            );
+            return;
+        }
+
+        if (!password.trim()) {
+            setErrorMessage(
+                'パスワードを入力してください。'
+            );
+            return;
+        }
+
         setIsLoading(true);
 
         try {
@@ -33,23 +166,35 @@ export const LoginPage = () => {
             login(result.token);
 
             if (rememberStaff) {
-                localStorage.setItem('last_employee_number', employeeNumber);
+                localStorage.setItem(
+                    'last_employee_number',
+                    employeeNumber
+                );
             } else {
-                localStorage.removeItem('last_employee_number');
+                localStorage.removeItem(
+                    'last_employee_number'
+                );
             }
 
-            navigate('/home');
+            navigate('/menu', {
+                replace: true,
+            });
         } catch {
-            setErrorMessage('担当者またはパスワードが違います。');
+            setErrorMessage(
+                '担当者またはパスワードが違います。'
+            );
         } finally {
             setIsLoading(false);
         }
+
     };
 
     return (
         <div className="login-page">
             <div className="login-shell">
-                <div className="login-clock">2026/04/01(水) 18:45</div>
+                <div className="login-clock">
+                    {formatDateTime(currentDateTime)}
+                </div>
 
                 <section className="login-hero">
                     <div>
@@ -105,22 +250,53 @@ export const LoginPage = () => {
                         </div>
 
                         <div className="login-form-group">
-                            <label htmlFor="staff">担当者</label>
+                            <label htmlFor="staff">
+                                担当者
+                            </label>
+
                             <select
                                 id="staff"
                                 className="login-select"
                                 value={employeeNumber}
-                                onChange={(e) => setEmployeeNumber(e.target.value)}
+                                onChange={(event) =>
+                                    setEmployeeNumber(
+                                        event.target.value
+                                    )
+                                }
+                                disabled={
+                                    isStaffLoading ||
+                                    staffOptions.length === 0
+                                }
                             >
-                                {staffOptions.map((staff) => (
-                                    <option
-                                        key={staff.employeeNumber}
-                                        value={staff.employeeNumber}
-                                    >
-                                        {staff.name}
+                                {isStaffLoading && (
+                                    <option value="">
+                                        担当者を読み込み中...
                                     </option>
-                                ))}
+                                )}
+
+                                {!isStaffLoading &&
+                                    staffOptions.length === 0 && (
+                                        <option value="">
+                                            担当者が登録されていません
+                                        </option>
+                                    )}
+
+                                {!isStaffLoading &&
+                                    staffOptions.map((staff) => (
+                                        <option
+                                            key={staff.employeeNumber}
+                                            value={staff.employeeNumber}
+                                        >
+                                            {staff.name}
+                                        </option>
+                                    ))}
                             </select>
+
+                            {staffLoadError && (
+                                <div className="login-error">
+                                    {staffLoadError}
+                                </div>
+                            )}
                         </div>
 
                         <div className="login-form-group">
@@ -156,7 +332,11 @@ export const LoginPage = () => {
                         <button
                             className="login-button"
                             type="submit"
-                            disabled={isLoading}
+                            disabled={
+                                isLoading ||
+                                isStaffLoading ||
+                                !employeeNumber
+                            }
                         >
                             {isLoading ? 'ログイン中...' : 'ログイン'}
                         </button>

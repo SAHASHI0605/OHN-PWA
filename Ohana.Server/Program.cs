@@ -50,6 +50,7 @@ builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
 
 builder.Services.AddScoped<IStaffRepository, StaffRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IStaffService, StaffService>();
 builder.Services.AddScoped<JwtTokenGenerator>();
 
 builder.Services.AddEndpointsApiExplorer();

@@ -9,14 +9,16 @@ public class StaffRepository : IStaffRepository
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
 
-    public StaffRepository(IDbConnectionFactory dbConnectionFactory)
+    public StaffRepository(
+        IDbConnectionFactory dbConnectionFactory)
     {
         _dbConnectionFactory = dbConnectionFactory;
     }
 
     public async Task<Staff?> GetByStaffCodeAsync(string staffCode)
     {
-        await using var connection = _dbConnectionFactory.CreateConnection();
+        await using var connection =
+            _dbConnectionFactory.CreateConnection();
 
         const string sql = @"
             SELECT
@@ -34,13 +36,35 @@ public class StaffRepository : IStaffRepository
 
         return await connection.QuerySingleOrDefaultAsync<Staff>(
             sql,
-            new { StaffCode = staffCode }
+            new
+            {
+                StaffCode = staffCode
+            }
         );
+    }
+
+    public async Task<IEnumerable<Staff>> GetActiveStaffAsync()
+    {
+        await using var connection =
+            _dbConnectionFactory.CreateConnection();
+
+        const string sql = @"
+        SELECT
+            staff_code AS StaffCode,
+            staff_name AS StaffName
+        FROM mst_staff
+        WHERE is_active = 1
+        ORDER BY
+            staff_code;
+    ";
+
+        return await connection.QueryAsync<Staff>(sql);
     }
 
     public async Task UpdateLastLoginAsync(string staffCode)
     {
-        await using var connection = _dbConnectionFactory.CreateConnection();
+        await using var connection =
+            _dbConnectionFactory.CreateConnection();
 
         const string sql = @"
             UPDATE mst_staff
@@ -50,7 +74,10 @@ public class StaffRepository : IStaffRepository
 
         await connection.ExecuteAsync(
             sql,
-            new { StaffCode = staffCode }
+            new
+            {
+                StaffCode = staffCode
+            }
         );
     }
 }
