@@ -61,6 +61,11 @@ export const LoginPage = () => {
     const [staffLoadError, setStaffLoadError] =
         useState('');
 
+    const [
+        logoutMessage,
+        setLogoutMessage,
+    ] = useState('');
+
     const [password, setPassword] = useState('');
     const [rememberStaff, setRememberStaff] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
@@ -134,6 +139,23 @@ export const LoginPage = () => {
         };
     }, []);
 
+    useEffect(() => {
+        const message =
+            sessionStorage.getItem(
+                'logout_message'
+            );
+
+        if (!message) {
+            return;
+        }
+
+        setLogoutMessage(message);
+
+        sessionStorage.removeItem(
+            'logout_message'
+        );
+    }, []);
+
     const handleLogin = async (
         event: React.FormEvent<HTMLFormElement>
     ) => {
@@ -163,7 +185,16 @@ export const LoginPage = () => {
                 password,
             });
 
-            login(result.token);
+            login(
+                result.token,
+                {
+                    employeeName:
+                        result.employeeName,
+
+                    role:
+                        result.role,
+                }
+            );
 
             if (rememberStaff) {
                 localStorage.setItem(
@@ -322,6 +353,15 @@ export const LoginPage = () => {
                             </label>
                             <span>Caps Lock に注意</span>
                         </div>
+
+                        {logoutMessage && (
+                            <div
+                                className="login-logout-message"
+                                role="status"
+                            >
+                                {logoutMessage}
+                            </div>
+                        )}
 
                         {errorMessage && (
                             <div className="login-error">

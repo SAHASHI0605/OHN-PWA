@@ -111,22 +111,46 @@ const formatTime = (date: Date) => {
     return `${hour}:${minute}`;
 };
 
+const getRoleDisplayName = (
+    role: string | undefined
+): string => {
+    switch (role) {
+        case '0':
+        case 'Administrator':
+        case 'Admin':
+            return '管理者';
+
+        case '1':
+        case 'Staff':
+        case 'General':
+            return 'スタッフ';
+
+        default:
+            return role || '権限未取得';
+    }
+};
+
 export const MenuPage = () => {
     const navigate = useNavigate();
-    const { logout } = useAuth();
+
+    const {
+        user,
+        logout,
+    } = useAuth();
 
     const [currentDateTime, setCurrentDateTime] =
         useState(new Date());
 
-    const [message, setMessage] =
-        useState('');
+    const [message, setMessage] = useState('');
 
-    /*
-     * 職員名・権限保持を実装するまでは仮表示です。
-     * 後ほどAuthContextの値へ置き換えます。
-     */
-    const staffName = '佐橋 輝彦';
-    const staffRole = '管理者';
+    const staffName =
+        user?.employeeName ??
+        '担当者名未取得';
+
+    const staffRole =
+        getRoleDisplayName(
+            user?.role
+        );
 
     useEffect(() => {
         const timerId = window.setInterval(() => {
