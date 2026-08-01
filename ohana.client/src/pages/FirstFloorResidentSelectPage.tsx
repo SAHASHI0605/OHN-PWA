@@ -397,7 +397,7 @@ function FirstFloorResidentSelectPage() {
             }
 
             return (
-                `${selectedRoom.roomNumber}号室　` +
+                `${selectedRoom.roomNumber}号室` +
                 `${selectedResident.name} 様`
             );
         }, [
@@ -478,10 +478,20 @@ function FirstFloorResidentSelectPage() {
             return;
         }
 
-        window.alert(
-            `${selectedRoom.roomNumber}号室 ` +
-            `${selectedResident.name} 様の` +
-            `記録入力画面へ進みます。`,
+        navigate(
+            `/records/${selectedResident.id}`,
+            {
+                state: {
+                    residentId:
+                        selectedResident.id,
+
+                    residentName:
+                        selectedResident.name,
+
+                    roomNumber:
+                        selectedRoom.roomNumber,
+                },
+            },
         );
     };
 

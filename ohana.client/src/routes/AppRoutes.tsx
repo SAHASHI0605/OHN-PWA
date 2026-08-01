@@ -14,6 +14,8 @@ import { MenuPage } from '../pages/MenuPage';
 import FloorSelectPage from '../pages/FloorSelectPage';
 import FirstFloorResidentSelectPage
     from '../pages/FirstFloorResidentSelectPage';
+import RecordInputPage
+    from '../pages/RecordInputPage';
 
 import { ProtectedRoute } from '../auth/ProtectedRoute';
 
@@ -48,6 +50,15 @@ export const AppRoutes = () => {
                 element={
                     <ProtectedRoute>
                         <FirstFloorResidentSelectPage />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path="/records/:residentId"
+                element={
+                    <ProtectedRoute>
+                        <RecordInputPage />
                     </ProtectedRoute>
                 }
             />

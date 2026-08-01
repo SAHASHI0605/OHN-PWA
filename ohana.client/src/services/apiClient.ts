@@ -2,8 +2,17 @@ import {
     dispatchAuthExpired,
 } from '../auth/authEvents';
 
+/*
+ * 開発環境：
+ * .env.development の VITE_API_BASE_URL を使用
+ *
+ * 本番環境：
+ * 環境変数がなければ、同一ホストの /api を使用
+ */
 const API_BASE_URL =
-    'https://localhost:7090/api';
+    import.meta.env
+        .VITE_API_BASE_URL ||
+    '/api';
 
 export class ApiError extends Error {
     status: number;
@@ -31,10 +40,18 @@ export const apiClient = async <TResponse>(
     const headers =
         new Headers(options.headers);
 
-    headers.set(
-        'Content-Type',
-        'application/json'
-    );
+    /*
+     * FormDataの場合はブラウザに
+     * Content-Typeを設定させる
+     */
+    if (
+        !(options.body instanceof FormData)
+    ) {
+        headers.set(
+            'Content-Type',
+            'application/json'
+        );
+    }
 
     if (token) {
         headers.set(
@@ -43,8 +60,13 @@ export const apiClient = async <TResponse>(
         );
     }
 
+    const normalizedEndpoint =
+        endpoint.startsWith('/')
+            ? endpoint
+            : `/${endpoint}`;
+
     const response = await fetch(
-        `${API_BASE_URL}${endpoint}`,
+        `${API_BASE_URL}${normalizedEndpoint}`,
         {
             ...options,
             headers,
@@ -82,6 +104,18 @@ export const apiClient = async <TResponse>(
      * 204 No Content対策
      */
     if (response.status === 204) {
+        return undefined as TResponse;
+    }
+
+    /*
+     * Content-Lengthが0の場合の対策
+     */
+    const contentLength =
+        response.headers.get(
+            'content-length'
+        );
+
+    if (contentLength === '0') {
         return undefined as TResponse;
     }
 

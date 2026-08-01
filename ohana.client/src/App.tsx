@@ -6,7 +6,7 @@ import './App.css';
 function App() {
     return (
         <AuthProvider>
-            <BrowserRouter>
+            <BrowserRouter basename="/colorful">
                 <AppRoutes />
             </BrowserRouter>
         </AuthProvider>
