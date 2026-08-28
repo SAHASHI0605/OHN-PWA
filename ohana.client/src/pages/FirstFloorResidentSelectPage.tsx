@@ -617,43 +617,55 @@ function FirstFloorResidentSelectPage() {
                         </div>
 
                         <div className="first-floor-map">
-                            <div className="first-floor-residential-zone">
-                                <div className="first-floor-room-row first-floor-room-row--top">
-                                    {TOP_ROOMS.map(
-                                        room => (
-                                            <RoomButton
-                                                key={
-                                                    room.roomNumber
-                                                }
-                                                room={
-                                                    room
-                                                }
-                                                selectedRoomNumber={
-                                                    selectedRoom
-                                                        ?.roomNumber
-                                                    ?? null
-                                                }
-                                                onClick={
-                                                    handleRoomSelect
-                                                }
-                                            />
-                                        ),
-                                    )}
+                            <div className="first-floor-top-rooms">
+                                {TOP_ROOMS.map(
+                                    room => (
+                                        <RoomButton
+                                            key={
+                                                room.roomNumber
+                                            }
+                                            room={
+                                                room
+                                            }
+                                            selectedRoomNumber={
+                                                selectedRoom
+                                                    ?.roomNumber
+                                                ?? null
+                                            }
+                                            onClick={
+                                                handleRoomSelect
+                                            }
+                                        />
+                                    ),
+                                )}
+                            </div>
 
+                            <div className="first-floor-top-shared">
+                                <div className="first-floor-facility first-floor-kitchen">
+                                    厨房
+                                </div>
+
+                                <div className="first-floor-vip-wc-stack">
                                     <div className="first-floor-facility">
-                                        収納
+                                        VIP
                                     </div>
 
                                     <div className="first-floor-facility">
-                                        予備室
+                                        WC
                                     </div>
                                 </div>
+                            </div>
 
-                                <div className="first-floor-corridor">
-                                    廊下
-                                </div>
+                            <div className="first-floor-dining-hall">
+                                食堂ホール
+                            </div>
 
-                                <div className="first-floor-room-row first-floor-room-row--bottom">
+                            <div className="first-floor-corridor">
+                                廊下
+                            </div>
+
+                            <div className="first-floor-bottom-residential">
+                                <div className="first-floor-bottom-rooms">
                                     {BOTTOM_ROOMS.map(
                                         room => (
                                             <RoomButton
@@ -674,26 +686,14 @@ function FirstFloorResidentSelectPage() {
                                             />
                                         ),
                                     )}
+                                </div>
 
-                                    <div className="first-floor-utility-stack">
-                                        <div className="first-floor-facility">
-                                            階段
-                                        </div>
-
-                                        <div className="first-floor-facility">
-                                            倉庫
-                                        </div>
-
-                                        <div className="first-floor-facility">
-                                            PS
-                                        </div>
+                                <div className="first-floor-bottom-utilities">
+                                    <div className="first-floor-facility first-floor-stairs">
+                                        階段
                                     </div>
 
-                                    <div className="first-floor-utility-stack">
-                                        <div className="first-floor-facility">
-                                            更衣室
-                                        </div>
-
+                                    <div className="first-floor-ev-bath">
                                         <div className="first-floor-facility">
                                             EV
                                         </div>
@@ -703,57 +703,37 @@ function FirstFloorResidentSelectPage() {
                                         </div>
                                     </div>
 
-                                    <div className="first-floor-utility-stack">
-                                        <div className="first-floor-facility">
-                                            洗濯
-                                            <br />
-                                            脱衣室
-                                        </div>
-
-                                        <div className="first-floor-facility">
-                                            浴室
-                                        </div>
-
-                                        <div className="first-floor-facility">
-                                            機械浴室
-                                        </div>
+                                    <div className="first-floor-facility first-floor-laundry">
+                                        洗濯
+                                        <br />
+                                        脱衣室
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="first-floor-right-complex">
-                                <div className="first-floor-shared-zone">
-                                    <div className="first-floor-facility first-floor-kitchen">
-                                        厨房
-                                    </div>
-
-                                    <div className="first-floor-facility first-floor-wc">
-                                        WC
-                                    </div>
-
-                                    <div className="first-floor-facility first-floor-bath">
-                                        汚損室
-                                        <br />
+                            <div className="first-floor-bottom-shared">
+                                <div className="first-floor-bath-zone">
+                                    <div className="first-floor-facility">
                                         浴室
                                     </div>
 
-                                    <div className="first-floor-facility first-floor-hall">
-                                        ホール
-                                        <br />
-                                        玄関
-                                    </div>
-
-                                    <div className="first-floor-facility first-floor-office">
-                                        事務室
-                                    </div>
-
-                                    <div className="first-floor-facility first-floor-machine-bath">
+                                    <div className="first-floor-facility">
                                         機械浴室
                                     </div>
                                 </div>
 
-                                <div className="first-floor-dining-hall">
-                                    食堂ホール
+                                <div className="first-floor-hall-zone">
+                                    <div className="first-floor-facility">
+                                        ホール
+                                    </div>
+
+                                    <div className="first-floor-facility">
+                                        玄関
+                                    </div>
+                                </div>
+
+                                <div className="first-floor-facility first-floor-office">
+                                    事務室
                                 </div>
                             </div>
                         </div>

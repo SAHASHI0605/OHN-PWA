@@ -180,10 +180,17 @@ export const MenuPage = () => {
         menuItem: MenuItem
     ) => {
         if (
-            menuItem.id === 'records'
+            (
+                menuItem.id === 'users'
+                || menuItem.id === 'records'
+                || menuItem.id === 'patrol'
+            )
             && menuItem.path
         ) {
-            navigate(menuItem.path);
+            navigate(
+                menuItem.path,
+            );
+
             return;
         }
 

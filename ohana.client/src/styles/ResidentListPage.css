@@ -1,0 +1,551 @@
+.resident-list-page {
+    --list-green: #74b52c;
+    --list-green-dark: #4f7518;
+    --list-teal: #1fa39e;
+    --list-border: #d9e2cf;
+    box-sizing: border-box;
+    min-width: 320px;
+    min-height: 100vh;
+    padding: 18px;
+    font-family: "Yu Gothic UI", "Meiryo", sans-serif;
+    color: #1b1b1b;
+    background: radial-gradient( circle at 10% 10%, rgba(137, 197, 59, 0.18), transparent 22% ), radial-gradient( circle at 88% 16%, rgba(32, 163, 158, 0.14), transparent 22% ), linear-gradient( 135deg, #f8fbf2 0%, #eef6e3 50%, #f9fcf4 100% );
+}
+
+    .resident-list-page *,
+    .resident-list-page *::before,
+    .resident-list-page *::after {
+        box-sizing: border-box;
+    }
+
+    .resident-list-page button {
+        font: inherit;
+    }
+
+/* =============================
+   全体
+============================= */
+
+.resident-list-shell {
+    position: relative;
+    width: min(1540px, 100%);
+    min-height: calc(100vh - 36px);
+    margin: 0 auto;
+    overflow: hidden;
+    border: 1px solid rgba(116, 181, 44, 0.18);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 14px 38px rgba(72, 112, 29, 0.16);
+}
+
+/* =============================
+   ヘッダー
+============================= */
+
+.resident-list-header {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(250px, 380px) 1fr auto;
+    align-items: center;
+    gap: 22px;
+    min-height: 92px;
+    padding: 14px 28px;
+    border-bottom: 1px solid #e4edd7;
+    background: rgba(255, 255, 255, 0.90);
+}
+
+.resident-list-brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.resident-list-brand__mark {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    border-radius: 14px;
+    font-size: 22px;
+    background: linear-gradient( 135deg, #dff0bd, #d8f3ed );
+    box-shadow: 0 6px 14px rgba(64, 145, 98, 0.18);
+}
+
+.resident-list-brand__name strong {
+    display: block;
+    font-size: 19px;
+    line-height: 1.2;
+}
+
+.resident-list-brand__name span {
+    display: block;
+    margin-top: 3px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #6d7868;
+}
+
+.resident-list-title {
+    min-width: 0;
+}
+
+.resident-list-title__tag {
+    display: inline-block;
+    margin-bottom: 4px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: #5d791e;
+    background: #e7f3d3;
+}
+
+.resident-list-title h1 {
+    margin: 0;
+    font-size: clamp( 24px, 2.1vw, 30px );
+    line-height: 1.15;
+}
+
+.resident-list-title p {
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: #6b7565;
+}
+
+.resident-list-account {
+    display: grid;
+    justify-items: end;
+    gap: 6px;
+}
+
+.resident-list-clock {
+    font-size: 12px;
+    font-weight: 800;
+    color: #66705f;
+}
+
+.resident-list-account__row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.resident-list-staff {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 6px 11px 6px 7px;
+    border: 1px solid #deebcd;
+    border-radius: 12px;
+    background: #fbfdf8;
+}
+
+.resident-list-staff__avatar {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    font-size: 15px;
+    background: linear-gradient( 135deg, var(--list-green), var(--list-teal) );
+}
+
+.resident-list-staff__text {
+    display: grid;
+    line-height: 1.15;
+}
+
+    .resident-list-staff__text strong {
+        font-size: 13px;
+    }
+
+    .resident-list-staff__text span {
+        font-size: 10px;
+        color: #6e7968;
+    }
+
+.resident-list-menu-button {
+    min-height: 40px;
+    padding: 0 14px;
+    border: 1px solid #d5e2c3;
+    border-radius: 11px;
+    font-size: 13px;
+    font-weight: 800;
+    color: #46523f;
+    background: #ffffff;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+    .resident-list-menu-button:hover {
+        border-color: #9fbd75;
+        background: #fbfdf7;
+        box-shadow: 0 5px 12px rgba(87, 119, 42, 0.12);
+    }
+
+/* =============================
+   メイン
+============================= */
+
+.resident-list-content {
+    position: relative;
+    z-index: 1;
+    padding: 18px 28px 16px;
+}
+
+.resident-list-guide {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 14px;
+    padding: 14px 20px;
+    border: 1px solid #e0ebd0;
+    border-radius: 16px;
+    background: linear-gradient( 135deg, #ffffff, #f7faef );
+}
+
+    .resident-list-guide h2 {
+        margin: 0;
+        font-size: 20px;
+    }
+
+        .resident-list-guide h2 span {
+            margin-left: 4px;
+            font-size: 13px;
+            color: #62705d;
+        }
+
+    .resident-list-guide p {
+        margin: 4px 0 0;
+        font-size: 12px;
+        color: #66705f;
+    }
+
+.resident-list-today {
+    min-width: 170px;
+    padding: 9px 16px;
+    border-radius: 13px;
+    text-align: center;
+    color: #ffffff;
+    background: linear-gradient( 135deg, var(--list-green), var(--list-teal) );
+}
+
+    .resident-list-today span {
+        display: block;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+    }
+
+    .resident-list-today strong {
+        display: block;
+        margin-top: 2px;
+        font-size: 14px;
+    }
+
+/* =============================
+   テーブル
+============================= */
+
+.resident-list-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--list-border);
+    border-radius: 14px;
+    background: #ffffff;
+}
+
+.resident-list-table {
+    width: 100%;
+    min-width: 1210px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 12px;
+}
+
+    .resident-list-table th,
+    .resident-list-table td {
+        min-height: 44px;
+        padding: 9px 6px;
+        border-right: 1px solid #dde3d7;
+        border-bottom: 1px solid #dde3d7;
+        vertical-align: middle;
+    }
+
+        .resident-list-table th:last-child,
+        .resident-list-table td:last-child {
+            border-right: none;
+        }
+
+    .resident-list-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* =============================
+   テーブル見出し
+============================= */
+
+    .resident-list-table thead th {
+        text-align: center;
+        font-weight: 800;
+        color: #536545;
+        background: #eef4e4;
+    }
+
+    .resident-list-table thead tr:first-child th {
+        padding-top: 9px;
+        padding-bottom: 7px;
+    }
+
+    .resident-list-table thead tr:nth-child(2) th {
+        padding-top: 5px;
+        padding-bottom: 6px;
+        font-size: 11px;
+        background: #f5f8ef;
+    }
+
+.resident-list-period-heading {
+    font-size: 14px !important;
+    color: #58723e !important;
+}
+
+/* =============================
+   朝・昼・夜の境界線
+============================= */
+
+/* 1段目：朝・昼・夜 */
+.resident-list-table thead tr:first-child
+th:nth-child(3),
+.resident-list-table thead tr:first-child
+th:nth-child(4),
+.resident-list-table thead tr:first-child
+th:nth-child(5) {
+    border-left: 2px solid #cbd9bc;
+}
+
+/* 2段目：朝・昼・夜それぞれの「薬」の左側 */
+.resident-list-table thead tr:nth-child(2)
+th:nth-child(1),
+.resident-list-table thead tr:nth-child(2)
+th:nth-child(4),
+.resident-list-table thead tr:nth-child(2)
+th:nth-child(7) {
+    border-left: 2px solid #cbd9bc;
+}
+
+/* データ行：朝・昼・夜それぞれの「薬」の左側 */
+.resident-list-table tbody
+td:nth-child(3),
+.resident-list-table tbody
+td:nth-child(6),
+.resident-list-table tbody
+td:nth-child(9) {
+    border-left: 2px solid #cbd9bc;
+}
+
+/* =============================
+   列幅
+============================= */
+
+.resident-list-name-column {
+    width: 145px;
+}
+
+.resident-list-staff-column {
+    width: 105px;
+}
+
+.resident-list-memo-column {
+    width: 175px;
+}
+
+/* =============================
+   データ行
+============================= */
+
+.resident-list-table tbody tr {
+    height: 46px;
+    transition: background 0.12s ease;
+}
+
+    .resident-list-table tbody tr:nth-child(even) {
+        background: #fcfdfb;
+    }
+
+    .resident-list-table tbody tr:hover {
+        background: #f4f8ee;
+    }
+
+.resident-list-table td {
+    text-align: center;
+    color: #30352d;
+}
+
+.resident-list-name-cell {
+    padding: 0 !important;
+    text-align: left !important;
+}
+
+/* =============================
+   利用者名
+============================= */
+
+.resident-list-name-button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 46px;
+    padding: 8px 10px;
+    border: 0;
+    font-weight: 800;
+    text-align: left;
+    text-decoration: underline;
+    color: #1d261b;
+    background: transparent;
+    cursor: pointer;
+    transition: color 0.12s ease, background 0.12s ease;
+}
+
+    .resident-list-name-button:hover {
+        color: #4f791a;
+        background: rgba( 116, 181, 44, 0.08 );
+    }
+
+    .resident-list-name-button:focus-visible {
+        outline: 2px solid #78b530;
+        outline-offset: -3px;
+        border-radius: 6px;
+    }
+
+    .resident-list-name-button span {
+        margin-left: 2px;
+        font-weight: 700;
+    }
+
+/* =============================
+   記録者・メモ
+============================= */
+
+.resident-list-recorder-cell {
+    white-space: nowrap;
+    font-size: 11px;
+}
+
+.resident-list-memo-cell {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    text-align: left !important;
+    line-height: 1.45;
+}
+
+/* =============================
+   チェックマーク
+============================= */
+
+.resident-list-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1;
+    color: #04a85b;
+    transform: rotate(-6deg);
+}
+
+/* =============================
+   フッター
+============================= */
+
+.resident-list-footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px 28px 13px;
+    border-top: 1px solid #eef2e7;
+    font-size: 9px;
+    font-weight: 700;
+    color: #7b8576;
+}
+
+/* =============================
+   1280px前後
+============================= */
+
+@media ( max-width: 1300px ) {
+    .resident-list-page {
+        padding: 12px;
+    }
+
+    .resident-list-shell {
+        min-height: calc(100vh - 24px);
+        border-radius: 20px;
+    }
+
+    .resident-list-header {
+        min-height: 86px;
+        grid-template-columns: 240px 1fr auto;
+        gap: 14px;
+        padding: 12px 20px;
+    }
+
+    .resident-list-brand__name strong {
+        font-size: 18px;
+    }
+
+    .resident-list-title h1 {
+        font-size: 26px;
+    }
+
+    .resident-list-content {
+        padding: 14px 20px;
+    }
+
+    .resident-list-guide {
+        padding: 12px 16px;
+    }
+
+    .resident-list-table {
+        min-width: 1180px;
+    }
+
+    .resident-list-footer {
+        padding: 9px 20px 11px;
+    }
+}
+
+/* =============================
+   小さめタブレット
+============================= */
+
+@media ( max-width: 1100px ) {
+    .resident-list-header {
+        grid-template-columns: 220px 1fr;
+        gap: 12px;
+    }
+
+    .resident-list-title {
+        display: none;
+    }
+
+    .resident-list-account {
+        justify-self: end;
+    }
+
+    .resident-list-guide h2 {
+        font-size: 18px;
+    }
+
+    .resident-list-table {
+        min-width: 1160px;
+    }
+}

@@ -14,8 +14,14 @@ import { MenuPage } from '../pages/MenuPage';
 import FloorSelectPage from '../pages/FloorSelectPage';
 import FirstFloorResidentSelectPage
     from '../pages/FirstFloorResidentSelectPage';
+import SecondFloorResidentSelectPage
+    from '../pages/SecondFloorResidentSelectPage';
 import RecordInputPage
     from '../pages/RecordInputPage';
+import ResidentListPage
+    from '../pages/ResidentListPage';
+import PatrolPage
+    from '../pages/PatrolPage';
 
 import { ProtectedRoute } from '../auth/ProtectedRoute';
 
@@ -37,6 +43,24 @@ export const AppRoutes = () => {
             />
 
             <Route
+                path="/users"
+                element={
+                    <ProtectedRoute>
+                        <ResidentListPage />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path="/patrol"
+                element={
+                    <ProtectedRoute>
+                        <PatrolPage />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
                 path="/residents/floors"
                 element={
                     <ProtectedRoute>
@@ -50,6 +74,15 @@ export const AppRoutes = () => {
                 element={
                     <ProtectedRoute>
                         <FirstFloorResidentSelectPage />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path="/residents/floors/2"
+                element={
+                    <ProtectedRoute>
+                        <SecondFloorResidentSelectPage />
                     </ProtectedRoute>
                 }
             />

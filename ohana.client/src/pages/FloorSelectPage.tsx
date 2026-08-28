@@ -32,13 +32,12 @@ function FloorSelectPage() {
         };
     }, []);
 
-    const handleFloorSelect = (floorNumber: 1 | 2) => {
-        if (floorNumber === 2) {
-            window.alert('2階の見取り図は現在準備中です。');
-            return;
-        }
-
-        navigate('/residents/floors/1');
+    const handleFloorSelect = (
+        floorNumber: 1 | 2,
+    ) => {
+        navigate(
+            `/residents/floors/${floorNumber}`,
+        );
     };
 
     const handleBackToMenu = () => {

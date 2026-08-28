@@ -1,0 +1,670 @@
+.second-floor-page {
+    min-width: 1024px;
+    min-height: 100vh;
+    padding: 18px;
+    font-family: "Yu Gothic UI", "Meiryo", sans-serif;
+    color: #1d271d;
+    background: radial-gradient( circle at 8% 8%, rgba(137, 197, 59, 0.18), transparent 24% ), radial-gradient( circle at 92% 14%, rgba(32, 163, 158, 0.13), transparent 23% ), linear-gradient( 135deg, #f8fbf2 0%, #eef6e3 52%, #f9fcf4 100% );
+}
+
+    .second-floor-page * {
+        box-sizing: border-box;
+    }
+
+.second-floor-shell {
+    position: relative;
+    width: min(1480px, 100%);
+    min-height: calc(100vh - 36px);
+    margin: 0 auto;
+    overflow: hidden;
+    border: 1px solid rgba(116, 181, 44, 0.2);
+    border-radius: 26px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 18px 50px rgba(72, 112, 29, 0.17);
+}
+
+/* ヘッダー */
+
+.second-floor-header {
+    min-height: 104px;
+    padding: 18px 26px;
+    display: grid;
+    grid-template-columns: minmax(250px, 390px) 1fr auto;
+    gap: 22px;
+    align-items: center;
+    border-bottom: 1px solid #e5edd9;
+    background: rgba(255, 255, 255, 0.88);
+}
+
+.second-floor-brand {
+    min-height: 66px;
+    padding: 9px 16px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #e9f0df;
+    border-radius: 17px;
+    background: #ffffff;
+    box-shadow: 0 9px 22px rgba(96, 132, 39, 0.07);
+}
+
+    .second-floor-brand img {
+        display: block;
+        width: 100%;
+        max-width: 310px;
+        height: auto;
+    }
+
+.second-floor-title__tag {
+    display: inline-block;
+    margin-bottom: 5px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    color: #58751d;
+    background: #e7f3d3;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.second-floor-title h1 {
+    margin: 0;
+    font-size: clamp(25px, 2.3vw, 34px);
+    line-height: 1.15;
+}
+
+.second-floor-title p {
+    margin: 6px 0 0;
+    color: #697568;
+    font-size: 13px;
+}
+
+.second-floor-account {
+    display: grid;
+    justify-items: end;
+    gap: 8px;
+}
+
+.second-floor-clock {
+    color: #66705f;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.second-floor-account__row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.second-floor-staff {
+    min-height: 42px;
+    padding: 7px 12px 7px 8px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border: 1px solid #deebcd;
+    border-radius: 13px;
+    background: #fbfdf8;
+}
+
+.second-floor-staff__avatar {
+    width: 31px;
+    height: 31px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    color: #ffffff;
+    background: linear-gradient( 135deg, #74b52c, #1fa39e );
+}
+
+.second-floor-staff__text {
+    display: grid;
+    gap: 1px;
+}
+
+    .second-floor-staff__text strong {
+        font-size: 13px;
+    }
+
+    .second-floor-staff__text span {
+        color: #6f796a;
+        font-size: 10px;
+    }
+
+.second-floor-header-button {
+    min-height: 42px;
+    padding: 0 14px;
+    border: 1px solid #d5e2c3;
+    border-radius: 11px;
+    color: #46523f;
+    background: #ffffff;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+/* メイン */
+
+.second-floor-content {
+    padding: 20px 24px 108px;
+}
+
+.second-floor-toolbar {
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+    .second-floor-toolbar h2 {
+        margin: 0 0 4px;
+        font-size: 20px;
+    }
+
+    .second-floor-toolbar p {
+        margin: 0;
+        color: #697568;
+        font-size: 12px;
+    }
+
+.second-floor-legend {
+    padding: 9px 12px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    border: 1px solid #e2ead7;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.85);
+}
+
+    .second-floor-legend span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #596556;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .second-floor-legend i {
+        width: 14px;
+        height: 14px;
+        border: 1px solid #cbd8c1;
+        border-radius: 4px;
+        background: #ffffff;
+    }
+
+        .second-floor-legend i.selected {
+            border-color: #74b52c;
+            background: #e3f4c9;
+        }
+
+        .second-floor-legend i.facility {
+            background: #f1f5ed;
+        }
+
+/* 見取り図 */
+
+.second-floor-map-card {
+    padding: 14px;
+    border: 1px solid #dbe7cc;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 12px 28px rgba(72, 112, 29, 0.08);
+}
+
+.second-floor-map-heading {
+    margin: 0 2px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .second-floor-map-heading strong {
+        color: #4f711f;
+        font-size: 22px;
+    }
+
+    .second-floor-map-heading > div {
+        min-width: 80px;
+        color: #426a36;
+        text-align: center;
+        font-weight: 900;
+    }
+
+    .second-floor-map-heading span {
+        display: block;
+        margin-top: -3px;
+        color: #1fa39e;
+        font-size: 19px;
+    }
+
+/*
+ * 2階見取り図全体
+ *
+ * 左:
+ * 居室群・中央共有設備
+ *
+ * 右:
+ * 食堂キッチン・食堂ホール
+ */
+.second-floor-map {
+    min-height: 430px;
+    display: grid;
+    grid-template-columns: minmax(920px, 5.9fr) minmax(215px, 1.25fr);
+    gap: 8px;
+}
+
+/* 居住エリア */
+
+.second-floor-residential-zone {
+    min-width: 0;
+    display: grid;
+    grid-template-rows: 1fr 30px 1fr;
+    gap: 7px;
+}
+
+.second-floor-room-row {
+    min-width: 0;
+    display: grid;
+    gap: 5px;
+}
+
+/*
+ * 上段
+ *
+ * 216 215 213 212 211 210 208 207
+ * 206 205 203 202 201 + 倉庫/WC
+ */
+.second-floor-room-row--top {
+    grid-template-columns: repeat(13, minmax(55px, 1fr)) minmax(72px, 0.9fr);
+}
+
+/*
+ * 下段左
+ *
+ * 217 218 220 221 222 223 225
+ */
+.second-floor-room-row--bottom-left {
+    grid-template-columns: repeat(7, minmax(69px, 1fr));
+}
+
+/*
+ * 下段右
+ *
+ * 226 227 228
+ */
+.second-floor-room-row--bottom-right {
+    grid-template-columns: repeat(3, minmax(69px, 1fr));
+}
+
+/* 居室 */
+
+.second-floor-room {
+    min-height: 150px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 2px solid #d9e5ce;
+    border-radius: 12px;
+    color: inherit;
+    background: #ffffff;
+    text-align: left;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(72, 112, 29, 0.05);
+    transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+    .second-floor-room:hover,
+    .second-floor-room:focus-visible {
+        transform: translateY(-2px);
+        border-color: #9fc96a;
+        outline: none;
+        box-shadow: 0 9px 18px rgba(72, 112, 29, 0.13);
+    }
+
+.second-floor-room--selected {
+    border-color: #74b52c;
+    background: #e3f4c9;
+    box-shadow: 0 0 0 3px rgba(116, 181, 44, 0.15), 0 10px 20px rgba(72, 112, 29, 0.15);
+}
+
+.second-floor-room__number {
+    padding: 6px;
+    border-bottom: 1px solid #e2e9dd;
+    color: #52634e;
+    background: #f6f9f3;
+    font-size: 12px;
+    font-weight: 900;
+    text-align: center;
+}
+
+.second-floor-room--selected
+.second-floor-room__number {
+    color: #3f6513;
+    background: #d6edb5;
+}
+
+.second-floor-room__resident {
+    flex: 1;
+    padding: 9px 6px 7px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    text-align: center;
+}
+
+    .second-floor-room__resident strong {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        font-size: 14px;
+        line-height: 1.2;
+    }
+
+    .second-floor-room__resident strong > span {
+        writing-mode: vertical-rl;
+        text-orientation: upright;
+        white-space: nowrap;
+        letter-spacing: 0.08em;
+    }
+
+    .second-floor-room__resident small {
+        color: #748071;
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+/* 廊下 */
+
+.second-floor-corridor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d9e2d2;
+    border-radius: 8px;
+    color: #7b8676;
+    background: repeating-linear-gradient( 90deg, #f7faf4, #f7faf4 18px, #f2f6ee 18px, #f2f6ee 36px );
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+}
+
+/* 下段全体 */
+
+.second-floor-bottom-layout {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(480px, 4.6fr) minmax(260px, 2.4fr) minmax(215px, 2fr);
+    gap: 6px;
+}
+
+/* 共有設備共通 */
+
+.second-floor-facility {
+    min-height: 80px;
+    padding: 8px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #d6dfd0;
+    border-radius: 10px;
+    color: #5f6b5c;
+    background: #f1f5ed;
+    font-size: 11px;
+    font-weight: 800;
+    text-align: center;
+}
+
+/*
+ * 縦積み設備
+ *
+ * 上段右:
+ * 倉庫 / WC
+ *
+ * 下段:
+ * 更衣室 / 階段室
+ * EV / 浴室
+ */
+.second-floor-utility-stack {
+    min-width: 0;
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    gap: 5px;
+}
+
+.second-floor-utility-stack--top {
+    height: 100%;
+}
+
+/*
+ * 下段中央
+ *
+ * [更衣室] [ EV ] [洗濯脱衣室] [休憩室]
+ * [階段室] [浴室] [洗濯脱衣室] [休憩室]
+ */
+.second-floor-center-facilities {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 0.75fr 1fr 0.75fr 0.95fr;
+    gap: 5px;
+}
+
+    .second-floor-center-facilities >
+    .second-floor-facility {
+        min-height: 100%;
+    }
+
+/* 右側共有部分 */
+
+.second-floor-right-complex {
+    display: grid;
+    grid-template-columns: minmax(78px, 0.62fr) minmax(130px, 1fr);
+    gap: 7px;
+}
+
+/*
+ * 左側は食堂キッチン
+ */
+.second-floor-shared-zone {
+    min-width: 0;
+    display: grid;
+}
+
+.second-floor-kitchen {
+    min-height: 100%;
+    writing-mode: vertical-rl;
+}
+
+/* 食堂ホール */
+
+.second-floor-dining-hall {
+    min-height: 100%;
+    display: grid;
+    place-items: center;
+    border: 1px solid #cbdcc8;
+    border-radius: 14px;
+    color: #3d6348;
+    background: linear-gradient( rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.52) ), repeating-linear-gradient( 45deg, #eaf4e8 0, #eaf4e8 12px, #e4f0e1 12px, #e4f0e1 24px );
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    writing-mode: vertical-rl;
+}
+
+/* 画面下部の選択欄 */
+
+.second-floor-selection-bar {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    min-height: 88px;
+    padding: 14px 24px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 18px;
+    align-items: center;
+    border-top: 1px solid #dce7d1;
+    background: rgba(250, 252, 247, 0.97);
+    box-shadow: 0 -10px 28px rgba(61, 96, 29, 0.12);
+}
+
+.second-floor-selection-copy {
+    min-width: 0;
+    display: grid;
+    gap: 3px;
+}
+
+    .second-floor-selection-copy span {
+        color: #758071;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+    }
+
+    .second-floor-selection-copy strong {
+        overflow: hidden;
+        color: #31432c;
+        font-size: 20px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .second-floor-selection-copy small {
+        color: #778273;
+        font-size: 11px;
+    }
+
+.second-floor-selection-actions {
+    display: flex;
+    gap: 10px;
+}
+
+    .second-floor-selection-actions button {
+        min-height: 52px;
+        padding: 0 20px;
+        border-radius: 14px;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+.second-floor-clear-button {
+    border: 1px solid #cdd9c4;
+    color: #52604e;
+    background: #ffffff;
+}
+
+.second-floor-confirm-button {
+    min-width: 210px;
+    border: 0;
+    color: #ffffff;
+    background: linear-gradient( 135deg, #74b52c, #55a81e );
+    box-shadow: 0 9px 18px rgba(89, 143, 32, 0.23);
+}
+
+.second-floor-selection-actions button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* 2名部屋の選択ダイアログ */
+
+.second-floor-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    padding: 24px;
+    display: grid;
+    place-items: center;
+    background: rgba(28, 39, 27, 0.42);
+    backdrop-filter: blur(4px);
+}
+
+.second-floor-dialog {
+    width: min(520px, 100%);
+    padding: 24px;
+    border: 1px solid #dce7d1;
+    border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 24px 60px rgba(39, 60, 29, 0.24);
+}
+
+    .second-floor-dialog h2 {
+        margin: 0 0 6px;
+        font-size: 24px;
+    }
+
+    .second-floor-dialog p {
+        margin: 0 0 18px;
+        color: #6d7869;
+        font-size: 13px;
+    }
+
+.second-floor-resident-list {
+    display: grid;
+    gap: 10px;
+}
+
+    .second-floor-resident-list button {
+        min-height: 58px;
+        padding: 0 18px;
+        border: 1px solid #d9e5ce;
+        border-radius: 14px;
+        color: #30402d;
+        background: #f9fcf5;
+        text-align: left;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+        .second-floor-resident-list button:hover,
+        .second-floor-resident-list button:focus-visible {
+            border-color: #9fc96a;
+            outline: none;
+            background: #eef8df;
+        }
+
+.second-floor-dialog__footer {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+    .second-floor-dialog__footer button {
+        min-height: 44px;
+        padding: 0 18px;
+        border: 1px solid #d0dcc8;
+        border-radius: 12px;
+        color: #52604e;
+        background: #ffffff;
+        font-weight: 800;
+        cursor: pointer;
+    }
+
+/* 1024～1120px程度 */
+
+@media (max-width: 1120px) {
+    .second-floor-header {
+        grid-template-columns: 300px 1fr;
+    }
+
+    .second-floor-account {
+        grid-column: 1 / -1;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .second-floor-map {
+        grid-template-columns: minmax(850px, 5.7fr) minmax(195px, 1.2fr);
+    }
+
+    .second-floor-bottom-layout {
+        grid-template-columns: minmax(440px, 4.5fr) minmax(245px, 2.4fr) minmax(195px, 1.9fr);
+    }
+}
