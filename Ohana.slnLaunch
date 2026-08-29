@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "管理者起動",
+    "Projects": [
+      {
+        "Path": "ohana.admin\\ohana.admin.esproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Ohana.Server\\Ohana.Server.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
