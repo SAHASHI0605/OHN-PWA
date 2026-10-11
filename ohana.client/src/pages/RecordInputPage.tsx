@@ -1,3 +1,4 @@
+import { RecordInputField } from '../components/RecordInputField';
 import {
     useEffect,
     useMemo,
@@ -17,12 +18,9 @@ import {
 import kaizuLogo from '../assets/kaizu-logo.png';
 
 import '../styles/RecordInputPage.css';
+import type { RecordResidentState } from '../types/residentSelection';
 
-type RecordLocationState = {
-    residentId: number;
-    residentName: string;
-    roomNumber: string;
-};
+type RecordLocationState = RecordResidentState;
 
 type MealType =
     | '朝食'
@@ -217,12 +215,6 @@ function RecordInputPage() {
         '',
     );
 
-    const [
-        selectedFileName,
-        setSelectedFileName,
-    ] = useState(
-        '',
-    );
 
     const [
         mealRecords,
@@ -368,9 +360,6 @@ function RecordInputPage() {
             '',
         );
 
-        setSelectedFileName(
-            '',
-        );
     };
 
     const handleVitalChange = (
@@ -412,7 +401,7 @@ function RecordInputPage() {
     const handleBackToResidentSelect =
         () => {
             navigate(
-                '/residents/floors/1',
+                `/residents/floors/${locationState?.floor ?? 1}`,
             );
         };
 
@@ -565,11 +554,11 @@ function RecordInputPage() {
 
                         <div>
                             <span>
-                                利用者ID
+                                {locationState?.serialNo ? '連番・入居日' : '利用者ID'}
                             </span>
 
                             <strong>
-                                {residentId}
+                                {locationState?.serialNo ? `${locationState.serialNo}・${locationState.moveInDate?.slice(0, 10).replaceAll('-', '/')}` : residentId}
                             </strong>
                         </div>
 
@@ -616,31 +605,7 @@ function RecordInputPage() {
                                     食事区分
                                 </label>
 
-                                <select
-                                    id="meal-type"
-                                    value={
-                                        mealType
-                                    }
-                                    onChange={(event) => {
-                                        setMealType(event.target.value as MealType);
-                                    }}
-                                >
-                                    <option value="朝食">
-                                        朝食
-                                    </option>
-
-                                    <option value="昼食">
-                                        昼食
-                                    </option>
-
-                                    <option value="おやつ">
-                                        おやつ
-                                    </option>
-
-                                    <option value="夕食">
-                                        夕食
-                                    </option>
-                                </select>
+                                <RecordInputField id="meal-type" label="食事区分" kind="select" value={mealType} onConfirm={value => setMealType(value as MealType)} options={[{ value: '朝食', label: '朝食' }, { value: '昼食', label: '昼食' }, { value: 'おやつ', label: 'おやつ' }, { value: '夕食', label: '夕食' }]} />
                             </div>
 
                             <div className="record-meal-sliders">
@@ -649,28 +614,7 @@ function RecordInputPage() {
                                         ごはん
                                     </label>
 
-                                    <input
-                                        id="rice-amount"
-                                        type="range"
-                                        min="0"
-                                        max="10"
-                                        value={
-                                            riceAmount
-                                        }
-                                        onChange={
-                                            event => {
-                                                setRiceAmount(
-                                                    Number(
-                                                        event.target.value,
-                                                    ),
-                                                );
-                                            }
-                                        }
-                                    />
-
-                                    <output>
-                                        {riceAmount}/10
-                                    </output>
+                                    <RecordInputField id="rice-amount" label="ごはん" kind="select" value={String(riceAmount)} displayValue={`${riceAmount}/10`} onConfirm={value => setRiceAmount(Number(value))} options={Array.from({length: 11}, (_,value) => ({value: String(value), label: String(value)}))} />
                                 </div>
 
                                 <div>
@@ -678,28 +622,7 @@ function RecordInputPage() {
                                         おかず
                                     </label>
 
-                                    <input
-                                        id="side-dish-amount"
-                                        type="range"
-                                        min="0"
-                                        max="10"
-                                        value={
-                                            sideDishAmount
-                                        }
-                                        onChange={
-                                            event => {
-                                                setSideDishAmount(
-                                                    Number(
-                                                        event.target.value,
-                                                    ),
-                                                );
-                                            }
-                                        }
-                                    />
-
-                                    <output>
-                                        {sideDishAmount}/10
-                                    </output>
+                                    <RecordInputField id="side-dish-amount" label="おかず" kind="select" value={String(sideDishAmount)} displayValue={`${sideDishAmount}/10`} onConfirm={value => setSideDishAmount(Number(value))} options={Array.from({length: 11}, (_,value) => ({value: String(value), label: String(value)}))} />
                                 </div>
                             </div>
 
@@ -709,35 +632,7 @@ function RecordInputPage() {
                                         服薬
                                     </label>
 
-                                    <select
-                                        id="medication"
-                                        value={
-                                            medication
-                                        }
-                                        onChange={
-                                            event => {
-                                                setMedication(
-                                                    event.target.value,
-                                                );
-                                            }
-                                        }
-                                    >
-                                        <option value="">
-                                            なし
-                                        </option>
-
-                                        <option value="食前薬">
-                                            食前薬
-                                        </option>
-
-                                        <option value="食後薬">
-                                            食後薬
-                                        </option>
-
-                                        <option value="就寝前薬">
-                                            就寝前薬
-                                        </option>
-                                    </select>
+                                    <RecordInputField id="medication" label="服薬" kind="select" value={medication} onConfirm={setMedication} options={[{ value: '', label: 'なし' }, { value: '食前薬', label: '食前薬' }, { value: '食後薬', label: '食後薬' }, { value: '食前後薬', label: '食前後薬' }, { value: '就寝前薬', label: '就寝前薬' }]} />
                                 </div>
 
                                 <div className="record-form-field">
@@ -745,31 +640,7 @@ function RecordInputPage() {
                                         点眼
                                     </label>
 
-                                    <select
-                                        id="eye-drops"
-                                        value={
-                                            eyeDrops
-                                        }
-                                        onChange={
-                                            event => {
-                                                setEyeDrops(
-                                                    event.target.value,
-                                                );
-                                            }
-                                        }
-                                    >
-                                        <option value="">
-                                            なし
-                                        </option>
-
-                                        <option value="○">
-                                            実施
-                                        </option>
-
-                                        <option value="拒否">
-                                            拒否
-                                        </option>
-                                    </select>
+                                    <RecordInputField id="eye-drops" label="点眼" kind="select" value={eyeDrops} onConfirm={setEyeDrops} options={[{ value: '', label: 'なし' }, { value: '○', label: '実施' }, { value: '拒否', label: '拒否' }]} />
                                 </div>
 
                                 <div className="record-form-field">
@@ -777,87 +648,17 @@ function RecordInputPage() {
                                         口腔ケア
                                     </label>
 
-                                    <select
-                                        id="oral-care"
-                                        value={
-                                            oralCare
-                                        }
-                                        onChange={
-                                            event => {
-                                                setOralCare(
-                                                    event.target.value,
-                                                );
-                                            }
-                                        }
-                                    >
-                                        <option value="">
-                                            なし
-                                        </option>
-
-                                        <option value="はみがき">
-                                            はみがき
-                                        </option>
-
-                                        <option value="うがい">
-                                            うがい
-                                        </option>
-
-                                        <option value="義歯洗浄">
-                                            義歯洗浄
-                                        </option>
-                                    </select>
+                                    <RecordInputField id="oral-care" label="口腔ケア" kind="select" value={oralCare} onConfirm={setOralCare} options={[{ value: '', label: 'なし' }, { value: 'はみがき', label: 'はみがき' }, { value: 'うがい', label: 'うがい' }, { value: '義歯洗浄', label: '義歯洗浄' }]} />
                                 </div>
                             </div>
 
-                            <div className="record-file-field">
-                                <label htmlFor="meal-photo">
-                                    写真
-                                </label>
-
-                                <input
-                                    id="meal-photo"
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={
-                                        event => {
-                                            const file =
-                                                event.target.files?.[0];
-
-                                            setSelectedFileName(
-                                                file?.name
-                                                ?? '',
-                                            );
-                                        }
-                                    }
-                                />
-
-                                <span>
-                                    {
-                                        selectedFileName
-                                        || '写真は選択されていません'
-                                    }
-                                </span>
-                            </div>
 
                             <div className="record-form-field">
                                 <label htmlFor="meal-memo">
                                     メモ
                                 </label>
 
-                                <textarea
-                                    id="meal-memo"
-                                    value={
-                                        memo
-                                    }
-                                    onChange={
-                                        event => {
-                                            setMemo(
-                                                event.target.value,
-                                            );
-                                        }
-                                    }
-                                    placeholder="食事時の様子などを入力"
-                                />
+                                <RecordInputField id="meal-memo" label="メモ" kind="memo" value={memo} onConfirm={setMemo} placeholder="メモを入力" />
                             </div>
 
                             <div className="record-table-wrap">
@@ -989,176 +790,53 @@ function RecordInputPage() {
                             </p>
 
                             <div className="record-vital-grid">
-                                <label htmlFor="height">
-                                    身長（cm）
-                                </label>
-
-                                <input
-                                    id="height"
-                                    type="number"
-                                    inputMode="decimal"
-                                    value={
-                                        vitalForm.height
-                                    }
-                                    onChange={
-                                        event => {
-                                            handleVitalChange(
-                                                'height',
-                                                event.target.value,
-                                            );
-                                        }
-                                    }
-                                />
-
-                                <label htmlFor="weight">
-                                    体重（kg）
-                                </label>
-
-                                <input
-                                    id="weight"
-                                    type="number"
-                                    inputMode="decimal"
-                                    value={
-                                        vitalForm.weight
-                                    }
-                                    onChange={
-                                        event => {
-                                            handleVitalChange(
-                                                'weight',
-                                                event.target.value,
-                                            );
-                                        }
-                                    }
-                                />
-
                                 <label htmlFor="systolic">
                                     血圧 上
                                 </label>
 
-                                <input
-                                    id="systolic"
-                                    type="number"
-                                    inputMode="numeric"
-                                    value={
-                                        vitalForm
-                                            .systolicBloodPressure
-                                    }
-                                    onChange={
-                                        event => {
-                                            handleVitalChange(
-                                                'systolicBloodPressure',
-                                                event.target.value,
-                                            );
-                                        }
-                                    }
-                                />
+                                <RecordInputField id="systolic" label="血圧 上" kind="number" value={vitalForm.systolicBloodPressure} onConfirm={value => handleVitalChange('systolicBloodPressure', value)} />
 
                                 <label htmlFor="diastolic">
                                     血圧 下
                                 </label>
 
-                                <input
-                                    id="diastolic"
-                                    type="number"
-                                    inputMode="numeric"
-                                    value={
-                                        vitalForm
-                                            .diastolicBloodPressure
-                                    }
-                                    onChange={
-                                        event => {
-                                            handleVitalChange(
-                                                'diastolicBloodPressure',
-                                                event.target.value,
-                                            );
-                                        }
-                                    }
-                                />
+                                <RecordInputField id="diastolic" label="血圧 下" kind="number" value={vitalForm.diastolicBloodPressure} onConfirm={value => handleVitalChange('diastolicBloodPressure', value)} />
 
                                 <label htmlFor="temperature">
                                     体温（℃）
                                 </label>
 
-                                <input
-                                    id="temperature"
-                                    type="number"
-                                    inputMode="decimal"
-                                    step="0.1"
-                                    value={
-                                        vitalForm.temperature
-                                    }
-                                    onChange={
-                                        event => {
-                                            handleVitalChange(
-                                                'temperature',
-                                                event.target.value,
-                                            );
-                                        }
-                                    }
-                                />
+                                <RecordInputField id="temperature" label="体温（℃）" kind="number" value={vitalForm.temperature} onConfirm={value => handleVitalChange('temperature', value)} decimal decimalPlaces={1} />
 
                                 <label htmlFor="respiration">
                                     呼吸（回/分）
                                 </label>
 
-                                <input
-                                    id="respiration"
-                                    type="number"
-                                    inputMode="numeric"
-                                    value={
-                                        vitalForm.respiration
-                                    }
-                                    onChange={
-                                        event => {
-                                            handleVitalChange(
-                                                'respiration',
-                                                event.target.value,
-                                            );
-                                        }
-                                    }
-                                />
+                                <RecordInputField id="respiration" label="呼吸（回/分）" kind="number" value={vitalForm.respiration} onConfirm={value => handleVitalChange('respiration', value)} />
 
                                 <label htmlFor="pulse">
                                     脈拍（回/分）
                                 </label>
 
-                                <input
-                                    id="pulse"
-                                    type="number"
-                                    inputMode="numeric"
-                                    value={
-                                        vitalForm.pulse
-                                    }
-                                    onChange={
-                                        event => {
-                                            handleVitalChange(
-                                                'pulse',
-                                                event.target.value,
-                                            );
-                                        }
-                                    }
-                                />
+                                <RecordInputField id="pulse" label="脈拍（回/分）" kind="number" value={vitalForm.pulse} onConfirm={value => handleVitalChange('pulse', value)} />
 
                                 <label htmlFor="spo2">
                                     SpO2（%）
                                 </label>
 
-                                <input
-                                    id="spo2"
-                                    type="number"
-                                    inputMode="numeric"
-                                    value={
-                                        vitalForm.spo2
-                                    }
-                                    onChange={
-                                        event => {
-                                            handleVitalChange(
-                                                'spo2',
-                                                event.target.value,
-                                            );
-                                        }
-                                    }
-                                />
+                                <RecordInputField id="spo2" label="SpO2（%）" kind="number" value={vitalForm.spo2} onConfirm={value => handleVitalChange('spo2', value)} />
+                                <label htmlFor="height">
+                                    身長（cm）
+                                </label>
+
+                                <RecordInputField id="height" label="身長（cm）" kind="number" value={vitalForm.height} onConfirm={value => handleVitalChange('height', value)} decimal />
+
+                                <label htmlFor="weight">
+                                    体重（kg）
+                                </label>
+
+                                <RecordInputField id="weight" label="体重（kg）" kind="number" value={vitalForm.weight} onConfirm={value => handleVitalChange('weight', value)} decimal />
+
                             </div>
                         </section>
 
@@ -1194,21 +872,7 @@ function RecordInputPage() {
                                         時刻
                                     </label>
 
-                                    <input
-                                        id="bath-time"
-                                        type="time"
-                                        value={
-                                            bathForm.time
-                                        }
-                                        onChange={
-                                            event => {
-                                                handleBathChange(
-                                                    'time',
-                                                    event.target.value,
-                                                );
-                                            }
-                                        }
-                                    />
+                                    <RecordInputField id="bath-time" label="時刻" kind="time" value={bathForm.time} onConfirm={value => handleBathChange('time', value)} />
                                 </div>
 
                                 <div className="record-form-field">
@@ -1216,21 +880,7 @@ function RecordInputPage() {
                                         介護者
                                     </label>
 
-                                    <input
-                                        id="caregiver"
-                                        type="text"
-                                        value={
-                                            bathForm.caregiver
-                                        }
-                                        onChange={
-                                            event => {
-                                                handleBathChange(
-                                                    'caregiver',
-                                                    event.target.value,
-                                                );
-                                            }
-                                        }
-                                    />
+                                    <RecordInputField id="caregiver" label="介護者" kind="text" value={bathForm.caregiver} onConfirm={value => handleBathChange('caregiver', value)} />
                                 </div>
 
                                 <div className="record-form-field">
@@ -1238,23 +888,7 @@ function RecordInputPage() {
                                         血圧 上
                                     </label>
 
-                                    <input
-                                        id="bath-systolic"
-                                        type="number"
-                                        inputMode="numeric"
-                                        value={
-                                            bathForm
-                                                .systolicBloodPressure
-                                        }
-                                        onChange={
-                                            event => {
-                                                handleBathChange(
-                                                    'systolicBloodPressure',
-                                                    event.target.value,
-                                                );
-                                            }
-                                        }
-                                    />
+                                    <RecordInputField id="bath-systolic" label="血圧 上" kind="number" value={bathForm.systolicBloodPressure} onConfirm={value => handleBathChange('systolicBloodPressure', value)} />
                                 </div>
 
                                 <div className="record-form-field">
@@ -1262,23 +896,7 @@ function RecordInputPage() {
                                         血圧 下
                                     </label>
 
-                                    <input
-                                        id="bath-diastolic"
-                                        type="number"
-                                        inputMode="numeric"
-                                        value={
-                                            bathForm
-                                                .diastolicBloodPressure
-                                        }
-                                        onChange={
-                                            event => {
-                                                handleBathChange(
-                                                    'diastolicBloodPressure',
-                                                    event.target.value,
-                                                );
-                                            }
-                                        }
-                                    />
+                                    <RecordInputField id="bath-diastolic" label="血圧 下" kind="number" value={bathForm.diastolicBloodPressure} onConfirm={value => handleBathChange('diastolicBloodPressure', value)} />
                                 </div>
 
                                 <div className="record-form-field">
@@ -1286,40 +904,7 @@ function RecordInputPage() {
                                         入浴方法
                                     </label>
 
-                                    <select
-                                        id="bath-method"
-                                        value={
-                                            bathForm.bathMethod
-                                        }
-                                        onChange={
-                                            event => {
-                                                handleBathChange(
-                                                    'bathMethod',
-                                                    event.target.value,
-                                                );
-                                            }
-                                        }
-                                    >
-                                        <option value="全身浴">
-                                            全身浴
-                                        </option>
-
-                                        <option value="半身浴">
-                                            半身浴
-                                        </option>
-
-                                        <option value="シャワー浴">
-                                            シャワー浴
-                                        </option>
-
-                                        <option value="機械浴">
-                                            機械浴
-                                        </option>
-
-                                        <option value="清拭">
-                                            清拭
-                                        </option>
-                                    </select>
+                                    <RecordInputField id="bath-method" label="入浴方法" kind="select" value={bathForm.bathMethod} onConfirm={value => handleBathChange('bathMethod', value)} options={[{ value: '全身浴', label: '全身浴' }, { value: '半身浴', label: '半身浴' }, { value: 'シャワー浴', label: 'シャワー浴' }, { value: '機械浴', label: '機械浴' }, { value: '清拭', label: '清拭' }]} />
                                 </div>
                             </div>
                         </section>

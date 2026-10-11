@@ -1,6 +1,7 @@
+import { RoomButton } from '../components/ResidentRoomCard';
+import { useResidentSelection } from '../hooks/useResidentSelection';
 import {
     useEffect,
-    useMemo,
     useState,
 } from 'react';
 
@@ -15,22 +16,7 @@ import {
 import kaizuLogo from '../assets/kaizu-logo.png';
 
 import '../styles/FirstFloorResidentSelectPage.css';
-
-type Resident = {
-    id: number;
-    name: string;
-};
-
-type Room = {
-    roomNumber: string;
-    residents: Resident[];
-};
-
-type RoomButtonProps = {
-    room: Room;
-    selectedRoomNumber: string | null;
-    onClick: (room: Room) => void;
-};
+import { residentSelectionKey } from '../types/residentSelection';
 
 const WEEKDAYS = [
     '日',
@@ -42,177 +28,10 @@ const WEEKDAYS = [
     '土',
 ];
 
-const TOP_ROOMS: Room[] = [
-    {
-        roomNumber: '113',
-        residents: [
-            {
-                id: 11301,
-                name: '川上 省蔵',
-            },
-        ],
-    },
-    {
-        roomNumber: '112',
-        residents: [
-            {
-                id: 11201,
-                name: '平野 志義',
-            },
-            {
-                id: 11202,
-                name: '松村 俊英',
-            },
-        ],
-    },
-    {
-        roomNumber: '111',
-        residents: [
-            {
-                id: 11101,
-                name: '岩田 五十美',
-            },
-        ],
-    },
-    {
-        roomNumber: '110',
-        residents: [
-            {
-                id: 11001,
-                name: '山村 多恵子',
-            },
-        ],
-    },
-    {
-        roomNumber: '108',
-        residents: [
-            {
-                id: 10801,
-                name: '安田 綾子',
-            },
-        ],
-    },
-    {
-        roomNumber: '107',
-        residents: [
-            {
-                id: 10701,
-                name: '松岡 和子',
-            },
-        ],
-    },
-    {
-        roomNumber: '106',
-        residents: [
-            {
-                id: 10601,
-                name: '中野 靖子',
-            },
-        ],
-    },
-    {
-        roomNumber: '105',
-        residents: [
-            {
-                id: 10501,
-                name: '青井 その',
-            },
-        ],
-    },
-    {
-        roomNumber: '103',
-        residents: [
-            {
-                id: 10301,
-                name: '水谷 ゆき子',
-            },
-        ],
-    },
-    {
-        roomNumber: '102',
-        residents: [
-            {
-                id: 10201,
-                name: '岩田 朋子',
-            },
-        ],
-    },
-    {
-        roomNumber: '101',
-        residents: [
-            {
-                id: 10101,
-                name: '石村 勝正',
-            },
-        ],
-    },
-];
-
-const BOTTOM_ROOMS: Room[] = [
-    {
-        roomNumber: '115',
-        residents: [
-            {
-                id: 11501,
-                name: '川上 百合子',
-            },
-        ],
-    },
-    {
-        roomNumber: '116',
-        residents: [
-            {
-                id: 11601,
-                name: '堀田 幸子',
-            },
-        ],
-    },
-    {
-        roomNumber: '117',
-        residents: [
-            {
-                id: 11701,
-                name: '服部 幸子',
-            },
-        ],
-    },
-    {
-        roomNumber: '118',
-        residents: [
-            {
-                id: 11801,
-                name: '小林 芳子',
-            },
-        ],
-    },
-    {
-        roomNumber: '120',
-        residents: [
-            {
-                id: 12001,
-                name: '馬場 政子',
-            },
-        ],
-    },
-    {
-        roomNumber: '121',
-        residents: [
-            {
-                id: 12101,
-                name: '光野 八重子',
-            },
-        ],
-    },
-    {
-        roomNumber: '122',
-        residents: [
-            {
-                id: 12201,
-                name: '丸山 たかを',
-            },
-        ],
-    },
-];
+// Layout order is independent from API data. Preserve the existing map positions.
+const TOP_ROOM_NUMBERS = ['113', '112', '111', '110', '108', '107', '106', '105', '103', '102', '101'];
+const BOTTOM_ROOM_NUMBERS = ['115', '116', '117', '118', '120', '121', '122'];
+const ROOM_NUMBERS = [...TOP_ROOM_NUMBERS, ...BOTTOM_ROOM_NUMBERS, 'VIP'];
 
 function formatCurrentDateTime(
     date: Date,
@@ -271,55 +90,6 @@ function getRoleDisplayName(
     }
 }
 
-function RoomButton({
-    room,
-    selectedRoomNumber,
-    onClick,
-}: RoomButtonProps) {
-    const isSelected =
-        room.roomNumber
-        === selectedRoomNumber;
-
-    return (
-        <button
-            type="button"
-            className={
-                `first-floor-room` +
-                (
-                    isSelected
-                        ? ' first-floor-room--selected'
-                        : ''
-                )
-            }
-            onClick={() => {
-                onClick(room);
-            }}
-        >
-            <span className="first-floor-room__number">
-                {room.roomNumber}
-            </span>
-
-            <span className="first-floor-room__resident">
-                <strong>
-                    {room.residents.map(
-                        resident => (
-                            <span
-                                key={resident.id}
-                            >
-                                {resident.name} 様
-                            </span>
-                        ),
-                    )}
-                </strong>
-
-                <small>
-                    入居者 {room.residents.length}名
-                </small>
-            </span>
-        </button>
-    );
-}
-
 function FirstFloorResidentSelectPage() {
     const navigate =
         useNavigate();
@@ -337,26 +107,9 @@ function FirstFloorResidentSelectPage() {
         ),
     );
 
-    const [
-        selectedRoom,
-        setSelectedRoom,
-    ] = useState<Room | null>(
-        null,
-    );
-
-    const [
-        selectedResident,
-        setSelectedResident,
-    ] = useState<Resident | null>(
-        null,
-    );
-
-    const [
-        dialogRoom,
-        setDialogRoom,
-    ] = useState<Room | null>(
-        null,
-    );
+    const { rooms, phase, loadError, reloadResidents, selectedResident, dialogRoom, setDialogRoom, selectedText, handleRoomSelect, handleResidentSelect, handleClearSelection, handleProceed } = useResidentSelection(1, ROOM_NUMBERS);
+    const topRooms = TOP_ROOM_NUMBERS.map(number => rooms.get(number)!);
+    const bottomRooms = BOTTOM_ROOM_NUMBERS.map(number => rooms.get(number)!);
 
     const staffName =
         user?.employeeName
@@ -387,75 +140,6 @@ function FirstFloorResidentSelectPage() {
         };
     }, []);
 
-    const selectedText =
-        useMemo(() => {
-            if (
-                !selectedRoom
-                || !selectedResident
-            ) {
-                return '利用者を選択してください';
-            }
-
-            return (
-                `${selectedRoom.roomNumber}号室` +
-                `${selectedResident.name} 様`
-            );
-        }, [
-            selectedRoom,
-            selectedResident,
-        ]);
-
-    const handleRoomSelect = (
-        room: Room,
-    ) => {
-        if (
-            room.residents.length
-            === 1
-        ) {
-            setSelectedRoom(
-                room,
-            );
-
-            setSelectedResident(
-                room.residents[0],
-            );
-
-            return;
-        }
-
-        setDialogRoom(
-            room,
-        );
-    };
-
-    const handleResidentSelect = (
-        room: Room,
-        resident: Resident,
-    ) => {
-        setSelectedRoom(
-            room,
-        );
-
-        setSelectedResident(
-            resident,
-        );
-
-        setDialogRoom(
-            null,
-        );
-    };
-
-    const handleClearSelection =
-        () => {
-            setSelectedRoom(
-                null,
-            );
-
-            setSelectedResident(
-                null,
-            );
-        };
-
     const handleBackToFloorSelect =
         () => {
             navigate(
@@ -469,31 +153,6 @@ function FirstFloorResidentSelectPage() {
                 '/menu',
             );
         };
-
-    const handleProceed = () => {
-        if (
-            !selectedRoom
-            || !selectedResident
-        ) {
-            return;
-        }
-
-        navigate(
-            `/records/${selectedResident.id}`,
-            {
-                state: {
-                    residentId:
-                        selectedResident.id,
-
-                    residentName:
-                        selectedResident.name,
-
-                    roomNumber:
-                        selectedRoom.roomNumber,
-                },
-            },
-        );
-    };
 
     return (
         <main className="first-floor-page">
@@ -581,6 +240,8 @@ function FirstFloorResidentSelectPage() {
                             </p>
                         </div>
 
+                        <div className="first-floor-toolbar-actions">
+                        <button type="button" className="first-floor-header-button" disabled={phase === 'loading'} onClick={reloadResidents}>再取得</button>
                         <div
                             className="first-floor-legend"
                             aria-label="凡例"
@@ -600,9 +261,12 @@ function FirstFloorResidentSelectPage() {
                                 共有設備
                             </span>
                         </div>
+                        </div>
                     </div>
 
-                    <div className="first-floor-map-card">
+                    {phase === 'loading' && <p className="first-floor-load-status" role="status">入居者情報を取得中…</p>}
+                    {phase === 'error' && <p className="first-floor-load-error" role="alert">{loadError}</p>}
+                    <div className="first-floor-map-card" aria-busy={phase === 'loading'}>
                         <div className="first-floor-map-heading">
                             <strong>
                                 1F
@@ -618,20 +282,18 @@ function FirstFloorResidentSelectPage() {
 
                         <div className="first-floor-map">
                             <div className="first-floor-top-rooms">
-                                {TOP_ROOMS.map(
+                                {topRooms.map(
                                     room => (
-                                        <RoomButton
+                                        <RoomButton prefix="first-floor"
                                             key={
                                                 room.roomNumber
                                             }
                                             room={
                                                 room
                                             }
-                                            selectedRoomNumber={
-                                                selectedRoom
-                                                    ?.roomNumber
-                                                ?? null
-                                            }
+                                            selectedResident={selectedResident}
+                                            phase={phase}
+                                            onSelect={handleResidentSelect}
                                             onClick={
                                                 handleRoomSelect
                                             }
@@ -645,15 +307,7 @@ function FirstFloorResidentSelectPage() {
                                     厨房
                                 </div>
 
-                                <div className="first-floor-vip-wc-stack">
-                                    <div className="first-floor-facility">
-                                        VIP
-                                    </div>
-
-                                    <div className="first-floor-facility">
-                                        WC
-                                    </div>
-                                </div>
+                                <RoomButton prefix="first-floor" room={rooms.get('VIP')!} selectedResident={selectedResident} phase={phase} onClick={handleRoomSelect} onSelect={handleResidentSelect} />
                             </div>
 
                             <div className="first-floor-dining-hall">
@@ -666,20 +320,18 @@ function FirstFloorResidentSelectPage() {
 
                             <div className="first-floor-bottom-residential">
                                 <div className="first-floor-bottom-rooms">
-                                    {BOTTOM_ROOMS.map(
+                                    {bottomRooms.map(
                                         room => (
-                                            <RoomButton
+                                            <RoomButton prefix="first-floor"
                                                 key={
                                                     room.roomNumber
                                                 }
                                                 room={
                                                     room
                                                 }
-                                                selectedRoomNumber={
-                                                    selectedRoom
-                                                        ?.roomNumber
-                                                    ?? null
-                                                }
+                                                selectedResident={selectedResident}
+                                            phase={phase}
+                                            onSelect={handleResidentSelect}
                                                 onClick={
                                                     handleRoomSelect
                                                 }
@@ -824,7 +476,7 @@ function FirstFloorResidentSelectPage() {
                                 resident => (
                                     <button
                                         key={
-                                            resident.id
+                                            residentSelectionKey(resident)
                                         }
                                         type="button"
                                         onClick={() => {
@@ -834,7 +486,7 @@ function FirstFloorResidentSelectPage() {
                                             );
                                         }}
                                     >
-                                        {resident.name} 様
+                                        {resident.tenantName} 様
                                     </button>
                                 ),
                             )}

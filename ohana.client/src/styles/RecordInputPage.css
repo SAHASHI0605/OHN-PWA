@@ -312,8 +312,7 @@
     gap: 6px;
 }
 
-    .record-form-field label,
-    .record-file-field label {
+    .record-form-field label {
         color: #4e5b4b;
         font-size: 12px;
         font-weight: 800;
@@ -387,39 +386,6 @@
         font-size: 12px;
         font-weight: 900;
         text-align: right;
-    }
-
-.record-file-field {
-    margin: 14px 0;
-    display: grid;
-    grid-template-columns: 42px 150px minmax(0, 1fr);
-    gap: 8px;
-    align-items: center;
-}
-
-    .record-file-field input[type="file"] {
-        width: 150px;
-        color: transparent;
-    }
-
-        .record-file-field input[type="file"]::file-selector-button {
-            min-height: 36px;
-            padding: 0 14px;
-            border: 1px solid #cbd8bf;
-            border-radius: 9px;
-            color: #45523f;
-            background: #f4f8ef;
-            font-weight: 800;
-            cursor: pointer;
-        }
-
-    .record-file-field span {
-        min-width: 0;
-        overflow: hidden;
-        color: #6a7567;
-        font-size: 11px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
     }
 
 .record-panel__time {

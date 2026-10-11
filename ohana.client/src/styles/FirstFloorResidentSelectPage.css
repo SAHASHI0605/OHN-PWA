@@ -358,12 +358,10 @@
     min-height: 100%;
 }
 
-.first-floor-vip-wc-stack {
-    min-width: 0;
-    display: grid;
-    grid-template-rows: repeat(2, 1fr);
-    gap: 5px;
-}
+.first-floor-top-shared > .first-floor-room { min-width: 0; }
+
+/* Independent name buttons preserve serial 1/2 positions and selection. */
+.first-floor-load-error { color: #a33128; border-color: #efc7c2; background: #fff3f1; }
 
 /* 廊下 */
 

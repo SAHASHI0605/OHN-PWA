@@ -62,6 +62,8 @@ builder.Services.AddScoped<StaffJwtBearerEvents>();
 builder.Services.AddScoped<IResidentMaintenanceRepository, ResidentMaintenanceRepository>();
 builder.Services.AddScoped<IResidentMaintenanceService, ResidentMaintenanceService>();
 builder.Services.AddScoped<ResidentVersion>();
+builder.Services.AddScoped<IResidentSelectionRepository, ResidentSelectionRepository>();
+builder.Services.AddScoped<IResidentSelectionService, ResidentSelectionService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

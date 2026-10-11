@@ -1,6 +1,8 @@
+import { RoomButton } from '../components/ResidentRoomCard';
+import { useResidentSelection } from '../hooks/useResidentSelection';
+import { residentSelectionKey } from '../types/residentSelection';
 import {
     useEffect,
-    useMemo,
     useState,
 } from 'react';
 
@@ -16,22 +18,6 @@ import kaizuLogo from '../assets/kaizu-logo.png';
 
 import '../styles/SecondFloorResidentSelectPage.css';
 
-type Resident = {
-    id: number;
-    name: string;
-};
-
-type Room = {
-    roomNumber: string;
-    residents: Resident[];
-};
-
-type RoomButtonProps = {
-    room: Room;
-    selectedRoomNumber: string | null;
-    onClick: (room: Room) => void;
-};
-
 const WEEKDAYS = [
     '日',
     '月',
@@ -42,221 +28,10 @@ const WEEKDAYS = [
     '土',
 ];
 
-const TOP_ROOMS: Room[] = [
-    {
-        roomNumber: '216',
-        residents: [
-            {
-                id: 21601,
-                name: '大橋 純子',
-            },
-        ],
-    },
-    {
-        roomNumber: '215',
-        residents: [
-            {
-                id: 21501,
-                name: '伊藤 満',
-            },
-        ],
-    },
-    {
-        roomNumber: '213',
-        residents: [
-            {
-                id: 21301,
-                name: '三輪 茂安',
-            },
-        ],
-    },
-    {
-        roomNumber: '212',
-        residents: [
-            {
-                id: 21201,
-                name: '森 正子',
-            },
-        ],
-    },
-    {
-        roomNumber: '211',
-        residents: [
-            {
-                id: 21101,
-                name: '石神 照美',
-            },
-        ],
-    },
-    {
-        roomNumber: '210',
-        residents: [
-            {
-                id: 21001,
-                name: '山下 富美子',
-            },
-        ],
-    },
-    {
-        roomNumber: '208',
-        residents: [
-            {
-                id: 20801,
-                name: '前川 幸子',
-            },
-        ],
-    },
-    {
-        roomNumber: '207',
-        residents: [
-            {
-                id: 20701,
-                name: '田中 清征',
-            },
-        ],
-    },
-    {
-        roomNumber: '206',
-        residents: [
-            {
-                id: 20601,
-                name: '勅使川原',
-            },
-        ],
-    },
-    {
-        roomNumber: '205',
-        residents: [
-            {
-                id: 20501,
-                name: '伊藤 ふみ子',
-            },
-        ],
-    },
-    {
-        roomNumber: '203',
-        residents: [
-            {
-                id: 20301,
-                name: '神田 昌幸',
-            },
-        ],
-    },
-    {
-        roomNumber: '202',
-        residents: [
-            {
-                id: 20201,
-                name: '中島 静',
-            },
-        ],
-    },
-    {
-        roomNumber: '201',
-        residents: [
-            {
-                id: 20101,
-                name: '水谷 昭子',
-            },
-        ],
-    },
-];
-
-const BOTTOM_LEFT_ROOMS: Room[] = [
-    {
-        roomNumber: '217',
-        residents: [
-            {
-                id: 21701,
-                name: '川面 勇作',
-            },
-        ],
-    },
-    {
-        roomNumber: '218',
-        residents: [
-            {
-                id: 21801,
-                name: '藤原 臨子',
-            },
-        ],
-    },
-    {
-        roomNumber: '220',
-        residents: [
-            {
-                id: 22001,
-                name: '伊藤 富士男',
-            },
-        ],
-    },
-    {
-        roomNumber: '221',
-        residents: [
-            {
-                id: 22101,
-                name: '門山 早苗',
-            },
-        ],
-    },
-    {
-        roomNumber: '222',
-        residents: [
-            {
-                id: 22201,
-                name: '上田 香代子',
-            },
-        ],
-    },
-    {
-        roomNumber: '223',
-        residents: [
-            {
-                id: 22301,
-                name: '石村 玲子',
-            },
-        ],
-    },
-    {
-        roomNumber: '225',
-        residents: [
-            {
-                id: 22501,
-                name: '伊藤 道子',
-            },
-        ],
-    },
-];
-
-const BOTTOM_RIGHT_ROOMS: Room[] = [
-    {
-        roomNumber: '226',
-        residents: [
-            {
-                id: 22601,
-                name: '高木 勤',
-            },
-        ],
-    },
-    {
-        roomNumber: '227',
-        residents: [
-            {
-                id: 22701,
-                name: '箕浦 和子',
-            },
-        ],
-    },
-    {
-        roomNumber: '228',
-        residents: [
-            {
-                id: 22801,
-                name: '西塚 卯子',
-            },
-        ],
-    },
-];
+const TOP_ROOM_NUMBERS = ['216','215','213','212','211','210','208','207','206','205','203','202','201'];
+const BOTTOM_LEFT_ROOM_NUMBERS = ['217','218','220','221','222','223','225'];
+const BOTTOM_RIGHT_ROOM_NUMBERS = ['226','227','228'];
+const ROOM_NUMBERS = [...TOP_ROOM_NUMBERS, ...BOTTOM_LEFT_ROOM_NUMBERS, ...BOTTOM_RIGHT_ROOM_NUMBERS];
 
 function formatCurrentDateTime(
     date: Date,
@@ -315,55 +90,6 @@ function getRoleDisplayName(
     }
 }
 
-function RoomButton({
-    room,
-    selectedRoomNumber,
-    onClick,
-}: RoomButtonProps) {
-    const isSelected =
-        room.roomNumber
-        === selectedRoomNumber;
-
-    return (
-        <button
-            type="button"
-            className={
-                `second-floor-room` +
-                (
-                    isSelected
-                        ? ' second-floor-room--selected'
-                        : ''
-                )
-            }
-            onClick={() => {
-                onClick(room);
-            }}
-        >
-            <span className="second-floor-room__number">
-                {room.roomNumber}
-            </span>
-
-            <span className="second-floor-room__resident">
-                <strong>
-                    {room.residents.map(
-                        resident => (
-                            <span
-                                key={resident.id}
-                            >
-                                {resident.name} 様
-                            </span>
-                        ),
-                    )}
-                </strong>
-
-                <small>
-                    入居者 {room.residents.length}名
-                </small>
-            </span>
-        </button>
-    );
-}
-
 function SecondFloorResidentSelectPage() {
     const navigate =
         useNavigate();
@@ -381,26 +107,10 @@ function SecondFloorResidentSelectPage() {
         ),
     );
 
-    const [
-        selectedRoom,
-        setSelectedRoom,
-    ] = useState<Room | null>(
-        null,
-    );
-
-    const [
-        selectedResident,
-        setSelectedResident,
-    ] = useState<Resident | null>(
-        null,
-    );
-
-    const [
-        dialogRoom,
-        setDialogRoom,
-    ] = useState<Room | null>(
-        null,
-    );
+    const { rooms, phase, loadError, reloadResidents, selectedResident, dialogRoom, setDialogRoom, selectedText, handleRoomSelect, handleResidentSelect, handleClearSelection, handleProceed } = useResidentSelection(2, ROOM_NUMBERS);
+    const topRooms = TOP_ROOM_NUMBERS.map(number => rooms.get(number)!);
+    const bottomLeftRooms = BOTTOM_LEFT_ROOM_NUMBERS.map(number => rooms.get(number)!);
+    const bottomRightRooms = BOTTOM_RIGHT_ROOM_NUMBERS.map(number => rooms.get(number)!);
 
     const staffName =
         user?.employeeName
@@ -431,75 +141,6 @@ function SecondFloorResidentSelectPage() {
         };
     }, []);
 
-    const selectedText =
-        useMemo(() => {
-            if (
-                !selectedRoom
-                || !selectedResident
-            ) {
-                return '利用者を選択してください';
-            }
-
-            return (
-                `${selectedRoom.roomNumber}号室` +
-                `${selectedResident.name} 様`
-            );
-        }, [
-            selectedRoom,
-            selectedResident,
-        ]);
-
-    const handleRoomSelect = (
-        room: Room,
-    ) => {
-        if (
-            room.residents.length
-            === 1
-        ) {
-            setSelectedRoom(
-                room,
-            );
-
-            setSelectedResident(
-                room.residents[0],
-            );
-
-            return;
-        }
-
-        setDialogRoom(
-            room,
-        );
-    };
-
-    const handleResidentSelect = (
-        room: Room,
-        resident: Resident,
-    ) => {
-        setSelectedRoom(
-            room,
-        );
-
-        setSelectedResident(
-            resident,
-        );
-
-        setDialogRoom(
-            null,
-        );
-    };
-
-    const handleClearSelection =
-        () => {
-            setSelectedRoom(
-                null,
-            );
-
-            setSelectedResident(
-                null,
-            );
-        };
-
     const handleBackToFloorSelect =
         () => {
             navigate(
@@ -513,31 +154,6 @@ function SecondFloorResidentSelectPage() {
                 '/menu',
             );
         };
-
-    const handleProceed = () => {
-        if (
-            !selectedRoom
-            || !selectedResident
-        ) {
-            return;
-        }
-
-        navigate(
-            `/records/${selectedResident.id}`,
-            {
-                state: {
-                    residentId:
-                        selectedResident.id,
-
-                    residentName:
-                        selectedResident.name,
-
-                    roomNumber:
-                        selectedRoom.roomNumber,
-                },
-            },
-        );
-    };
 
     return (
         <main className="second-floor-page">
@@ -625,6 +241,8 @@ function SecondFloorResidentSelectPage() {
                             </p>
                         </div>
 
+                        <div className="second-floor-toolbar-actions">
+                        <button type="button" className="second-floor-header-button" disabled={phase === 'loading'} onClick={reloadResidents}>再取得</button>
                         <div
                             className="second-floor-legend"
                             aria-label="凡例"
@@ -644,9 +262,12 @@ function SecondFloorResidentSelectPage() {
                                 共有設備
                             </span>
                         </div>
+                        </div>
                     </div>
 
-                    <div className="second-floor-map-card">
+                    {phase === 'loading' && <p className="second-floor-load-status" role="status">入居者情報を取得中…</p>}
+                    {phase === 'error' && <p className="second-floor-load-error" role="alert">{loadError}</p>}
+                    <div className="second-floor-map-card" aria-busy={phase === 'loading'}>
                         <div className="second-floor-map-heading">
                             <strong>
                                 2F
@@ -663,20 +284,18 @@ function SecondFloorResidentSelectPage() {
                         <div className="second-floor-map">
                             <div className="second-floor-residential-zone">
                                 <div className="second-floor-room-row second-floor-room-row--top">
-                                    {TOP_ROOMS.map(
+                                    {topRooms.map(
                                         room => (
-                                            <RoomButton
+                                            <RoomButton prefix="second-floor"
                                                 key={
                                                     room.roomNumber
                                                 }
                                                 room={
                                                     room
                                                 }
-                                                selectedRoomNumber={
-                                                    selectedRoom
-                                                        ?.roomNumber
-                                                    ?? null
-                                                }
+                                                selectedResident={selectedResident}
+                                                phase={phase}
+                                                onSelect={handleResidentSelect}
                                                 onClick={
                                                     handleRoomSelect
                                                 }
@@ -701,20 +320,18 @@ function SecondFloorResidentSelectPage() {
 
                                 <div className="second-floor-bottom-layout">
                                     <div className="second-floor-room-row second-floor-room-row--bottom-left">
-                                        {BOTTOM_LEFT_ROOMS.map(
+                                        {bottomLeftRooms.map(
                                             room => (
-                                                <RoomButton
+                                                <RoomButton prefix="second-floor"
                                                     key={
                                                         room.roomNumber
                                                     }
                                                     room={
                                                         room
                                                     }
-                                                    selectedRoomNumber={
-                                                        selectedRoom
-                                                            ?.roomNumber
-                                                        ?? null
-                                                    }
+                                                    selectedResident={selectedResident}
+                                                phase={phase}
+                                                onSelect={handleResidentSelect}
                                                     onClick={
                                                         handleRoomSelect
                                                     }
@@ -756,20 +373,18 @@ function SecondFloorResidentSelectPage() {
                                     </div>
 
                                     <div className="second-floor-room-row second-floor-room-row--bottom-right">
-                                        {BOTTOM_RIGHT_ROOMS.map(
+                                        {bottomRightRooms.map(
                                             room => (
-                                                <RoomButton
+                                                <RoomButton prefix="second-floor"
                                                     key={
                                                         room.roomNumber
                                                     }
                                                     room={
                                                         room
                                                     }
-                                                    selectedRoomNumber={
-                                                        selectedRoom
-                                                            ?.roomNumber
-                                                        ?? null
-                                                    }
+                                                    selectedResident={selectedResident}
+                                                phase={phase}
+                                                onSelect={handleResidentSelect}
                                                     onClick={
                                                         handleRoomSelect
                                                     }
@@ -881,7 +496,7 @@ function SecondFloorResidentSelectPage() {
                                 resident => (
                                     <button
                                         key={
-                                            resident.id
+                                            residentSelectionKey(resident)
                                         }
                                         type="button"
                                         onClick={() => {
@@ -891,7 +506,7 @@ function SecondFloorResidentSelectPage() {
                                             );
                                         }}
                                     >
-                                        {resident.name} 様
+                                        {resident.tenantName} 様
                                     </button>
                                 ),
                             )}
