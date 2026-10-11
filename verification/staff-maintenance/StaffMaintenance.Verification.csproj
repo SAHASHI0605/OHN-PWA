@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Reuse the already-built server and its existing dependencies; no NuGet changes. -->
+    <Reference Include="../../Ohana.Server/bin/Debug/net9.0/*.dll" />
+  </ItemGroup>
+</Project>

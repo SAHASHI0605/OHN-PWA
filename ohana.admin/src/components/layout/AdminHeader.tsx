@@ -1,9 +1,13 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, matchPath, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../auth/useAuth';
+import { adminMenu } from '../../routes/adminMenu';
 
 export function AdminHeader() {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const { pathname } = useLocation();
+    const pageName = pathname === '/dashboard' ? 'ダッシュボード'
+        : adminMenu.find(item => matchPath({ path: item.path, end: false }, pathname))?.label;
     const handleLogout = () => {
         logout();
         navigate('/login', { replace: true });
@@ -14,6 +18,7 @@ export function AdminHeader() {
                 <span className="admin-brand-mark" aria-hidden="true">O</span>
                 <span>Ohana 管理システム<small>からふる庭園海津</small></span>
             </Link>
+            {pageName && <h1 id="admin-current-page" className="admin-header-page-title">{pageName}</h1>}
             <div className="admin-header-account">
                 <span className="admin-user-name">ログイン：<strong>{user?.name || user?.employeeNumber}</strong></span>
                 <button className="admin-logout" type="button" onClick={handleLogout}>ログアウト</button>

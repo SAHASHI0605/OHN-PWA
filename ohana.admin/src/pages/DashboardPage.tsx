@@ -15,11 +15,11 @@ export default function DashboardPage() {
                     <Link key={item.path} className="admin-dashboard-card" to={item.path}>
                         <div className="admin-card-top">
                             <span className="admin-card-symbol" aria-hidden="true">{item.symbol}</span>
-                            <span className="admin-preparing">準備中</span>
+                            {!item.available && <span className="admin-preparing">準備中</span>}
                         </div>
                         <h2>{item.label}</h2>
                         <p>{item.description}</p>
-                        <span className="admin-card-link">入口画面へ<span aria-hidden="true"> →</span></span>
+                        <span className="admin-card-link">{item.available ? '画面を開く' : '入口画面へ'}<span aria-hidden="true"> →</span></span>
                     </Link>
                 ))}
             </div>

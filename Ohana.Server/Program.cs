@@ -44,6 +44,7 @@ builder.Services
                 Encoding.UTF8.GetBytes(jwtKey!)
             )
         };
+        options.EventsType = typeof(StaffJwtBearerEvents);
     });
 
 builder.Services.AddAuthorization();
@@ -54,6 +55,10 @@ builder.Services.AddScoped<IStaffRepository, StaffRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IStaffService, StaffService>();
 builder.Services.AddScoped<JwtTokenGenerator>();
+builder.Services.AddScoped<IStaffMaintenanceRepository, StaffMaintenanceRepository>();
+builder.Services.AddScoped<IStaffMaintenanceService, StaffMaintenanceService>();
+builder.Services.AddScoped<StaffVersion>();
+builder.Services.AddScoped<StaffJwtBearerEvents>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -71,8 +76,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
 app.UseCors("ReactPolicy");
-
 app.UseAuthentication();
 app.UseAuthorization();
 

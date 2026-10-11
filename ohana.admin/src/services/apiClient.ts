@@ -12,6 +12,15 @@ const API_BASE_URL =
 
 const DEFAULT_TIMEOUT_MS = 10000;
 
+export class ApiError extends Error {
+    readonly status: number;
+    constructor(message: string, status: number) {
+        super(message);
+        this.name = 'ApiError';
+        this.status = status;
+    }
+}
+
 type ApiRequestOptions = RequestInit & {
     timeoutMs?: number;
 };
@@ -64,9 +73,13 @@ async function request<T>(
         }
 
         if (!response.ok) {
-            throw new Error(
-                `API request failed: ${response.status} ${response.statusText}`,
-            );
+            let message = `API request failed: ${response.status} ${response.statusText}`;
+            try {
+                const body = await response.json();
+                if (typeof body.message === 'string') message = body.message;
+                else if (body.errors) message = Object.values(body.errors).flat().join('\n');
+            } catch { /* The server may return an empty or non-JSON error response. */ }
+            throw new ApiError(message, response.status);
         }
 
         if (response.status === 204) {

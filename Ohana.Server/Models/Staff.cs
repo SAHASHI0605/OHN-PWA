@@ -6,6 +6,7 @@ public class Staff
 
     public string StaffName { get; set; } = string.Empty;
 
+    [System.Text.Json.Serialization.JsonIgnore]
     public string PasswordHash { get; set; } = string.Empty;
 
     public int Role { get; set; }
@@ -13,4 +14,6 @@ public class Staff
     public bool IsActive { get; set; }
 
     public DateTime? LastLoginAt { get; set; }
+
+    public DateTime UpdatedAt { get; set; }
 }
