@@ -11,7 +11,7 @@ export function AdminLayout() {
             <AdminHeader />
             <div className="admin-layout-body">
                 <AdminSidebar />
-                <main id="admin-main" className={`admin-main${pathname === '/staff' ? ' admin-main-staff' : ''}`} tabIndex={-1}><Outlet /></main>
+                <main id="admin-main" className={`admin-main${pathname === '/staff' || pathname === '/residents' ? ' admin-main-staff' : ''}`} tabIndex={-1}><Outlet /></main>
             </div>
         </div>
     );
