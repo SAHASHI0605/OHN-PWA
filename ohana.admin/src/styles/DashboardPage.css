@@ -1,0 +1,8 @@
+.admin-dashboard-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.admin-dashboard-card { display: flex; flex-direction: column; padding: 26px; border: 1px solid #e0e4e9; border-radius: 12px; background: #fff; color: inherit; text-decoration: none; transition: border-color .15s, box-shadow .15s; }
+.admin-dashboard-card:hover { border-color: #b6c7a6; box-shadow: 0 4px 16px #1b1b1b08; }
+.admin-card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
+.admin-card-symbol { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 10px; background: #edf3e7; color: #506d35; font-size: 16px; font-weight: 700; }
+.admin-dashboard-card h2 { margin: 0 0 14px; font-size: 19px; line-height: 1.6; }
+.admin-dashboard-card p { margin: 0 0 30px; color: #636b73; font-size: 14px; line-height: 1.9; }
+.admin-card-link { margin-top: auto; padding-top: 18px; border-top: 1px solid #edf0f3; color: #506d35; font-size: 13px; font-weight: 700; }

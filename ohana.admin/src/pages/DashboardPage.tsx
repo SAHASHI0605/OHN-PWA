@@ -1,140 +1,28 @@
-import {
-    useEffect,
-    useState,
-} from 'react';
+import { Link } from 'react-router-dom';
+import { adminMenu } from '../routes/adminMenu';
+import '../styles/DashboardPage.css';
 
-import {
-    useNavigate,
-} from 'react-router-dom';
-
-import {
-    useAuth,
-} from '../auth/useAuth';
-
-import {
-    healthService,
-    type HealthResponse,
-} from '../services/healthService';
-
-function DashboardPage() {
-    const navigate =
-        useNavigate();
-
-    const {
-        user,
-        logout,
-    } = useAuth();
-
-    const [
-        apiStatus,
-        setApiStatus,
-    ] =
-        useState<HealthResponse | null>(
-            null,
-        );
-
-    const [
-        errorMessage,
-        setErrorMessage,
-    ] = useState('');
-
-    useEffect(() => {
-        healthService
-            .getStatus()
-            .then((status) => {
-                setApiStatus(
-                    status,
-                );
-            })
-            .catch((error) => {
-                console.error(
-                    error,
-                );
-
-                setErrorMessage(
-                    'API接続エラー',
-                );
-            });
-    }, []);
-
-    const handleLogout = () => {
-        logout();
-
-        navigate(
-            '/login',
-            {
-                replace: true,
-            },
-        );
-    };
-
+export default function DashboardPage() {
     return (
-        <div>
-            <h1>
-                ダッシュボード
-            </h1>
-
-            <p>
-                Ohana 管理システム
-            </p>
-
-            {user && (
-                <div>
-                    <p>
-                        ログイン：
-                        {user.name}
-                    </p>
-
-                    <p>
-                        社員番号：
-                        {
-                            user.employeeNumber
-                        }
-                    </p>
-
-                    <p>
-                        権限：
-                        {user.role}
-                    </p>
-                </div>
-            )}
-
-            {apiStatus && (
-                <>
-                    <p>
-                        API Status:
-                        {' '}
-                        {
-                            apiStatus.status
-                        }
-                    </p>
-
-                    <p>
-                        Message:
-                        {' '}
-                        {
-                            apiStatus.message
-                        }
-                    </p>
-                </>
-            )}
-
-            {errorMessage && (
-                <p>
-                    {errorMessage}
-                </p>
-            )}
-
-            <button
-                type="button"
-                onClick={
-                    handleLogout
-                }
-            >
-                ログアウト
-            </button>
-        </div>
+        <section aria-labelledby="dashboard-title">
+            <div className="admin-page-heading">
+                <p className="admin-page-eyebrow">管理者ポータル</p>
+                <h1 id="dashboard-title">ダッシュボード</h1>
+                <p>利用するメニューを選択してください。</p>
+            </div>
+            <div className="admin-dashboard-cards">
+                {adminMenu.map(item => (
+                    <Link key={item.path} className="admin-dashboard-card" to={item.path}>
+                        <div className="admin-card-top">
+                            <span className="admin-card-symbol" aria-hidden="true">{item.symbol}</span>
+                            <span className="admin-preparing">準備中</span>
+                        </div>
+                        <h2>{item.label}</h2>
+                        <p>{item.description}</p>
+                        <span className="admin-card-link">入口画面へ<span aria-hidden="true"> →</span></span>
+                    </Link>
+                ))}
+            </div>
+        </section>
     );
 }
-
-export default DashboardPage;

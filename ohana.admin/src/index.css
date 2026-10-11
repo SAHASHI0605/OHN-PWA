@@ -24,3 +24,8 @@ select,
 textarea {
     font: inherit;
 }
+
+/* Preserve the desktop workspace minimum width. */
+#root:has(.admin-layout) {
+    min-width: 1200px;
+}
