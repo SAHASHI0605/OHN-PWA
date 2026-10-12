@@ -16,15 +16,18 @@ const API_BASE_URL =
 
 export class ApiError extends Error {
     status: number;
+    field?: string;
 
     constructor(
         message: string,
-        status: number
+        status: number,
+        field?: string,
     ) {
         super(message);
 
         this.name = 'ApiError';
         this.status = status;
+        this.field = field;
     }
 }
 
@@ -94,9 +97,17 @@ export const apiClient = async <TResponse>(
     }
 
     if (!response.ok) {
+        let message = `API Error: ${response.status}`;
+        let field: string | undefined;
+        try {
+            const error = await response.json();
+            if (typeof error.message === 'string') message = error.message;
+            if (typeof error.field === 'string') field = error.field;
+        } catch { /* Keep the existing status fallback for non-JSON responses. */ }
         throw new ApiError(
-            `API Error: ${response.status}`,
-            response.status
+            message,
+            response.status,
+            field,
         );
     }
 

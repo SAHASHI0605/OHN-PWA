@@ -1,7 +1,10 @@
+import { useRecordInput } from '../hooks/useRecordInput';
+import { RecordErrorDialog } from '../components/RecordErrorDialog';
+import { japanTime } from '../utilities/recordDate';
+import type { MealType } from '../services/recordService';
 import { RecordInputField } from '../components/RecordInputField';
 import {
     useEffect,
-    useMemo,
     useState,
 } from 'react';
 
@@ -22,94 +25,10 @@ import type { RecordResidentState } from '../types/residentSelection';
 
 type RecordLocationState = RecordResidentState;
 
-type MealType =
-    | '朝食'
-    | '昼食'
-    | 'おやつ'
-    | '夕食';
-
-type MealRecord = {
-    id: number;
-    mealType: MealType;
-    riceAmount: number;
-    sideDishAmount: number;
-    medication: string;
-    eyeDrops: string;
-    oralCare: string;
-    memo: string;
-};
-
-type VitalForm = {
-    height: string;
-    weight: string;
-    systolicBloodPressure: string;
-    diastolicBloodPressure: string;
-    temperature: string;
-    respiration: string;
-    pulse: string;
-    spo2: string;
-};
-
-type BathForm = {
-    time: string;
-    caregiver: string;
-    systolicBloodPressure: string;
-    diastolicBloodPressure: string;
-    bathMethod: string;
-};
-
-const WEEKDAYS = [
-    '日',
-    '月',
-    '火',
-    '水',
-    '木',
-    '金',
-    '土',
-];
-
-function formatDate(
-    date: Date,
-): string {
-    const year =
-        date.getFullYear();
-
-    const month =
-        String(
-            date.getMonth() + 1,
-        ).padStart(2, '0');
-
-    const day =
-        String(
-            date.getDate(),
-        ).padStart(2, '0');
-
-    const weekday =
-        WEEKDAYS[
-            date.getDay()
-        ];
-
-    return (
-        `${year}/${month}/${day}` +
-        `(${weekday})`
-    );
+function formatDate(date: Date): string {
+    return new Intl.DateTimeFormat('ja-JP', {timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',weekday:'short'}).format(date);
 }
-
-function formatTime(
-    date: Date,
-): string {
-    const hours =
-        String(
-            date.getHours(),
-        ).padStart(2, '0');
-
-    const minutes =
-        String(
-            date.getMinutes(),
-        ).padStart(2, '0');
-
-    return `${hours}:${minutes}`;
-}
+function formatTime(date: Date): string { return japanTime(date); }
 
 function getRoleDisplayName(
     role: string | undefined,
@@ -131,286 +50,23 @@ function getRoleDisplayName(
 }
 
 function RecordInputPage() {
-    const navigate =
-        useNavigate();
-
-    const location =
-        useLocation();
-
-    const {
-        residentId,
-    } = useParams<{
-        residentId: string;
-    }>();
-
-    const {
-        user,
-    } = useAuth();
-
-    const locationState =
-        location.state as
-            RecordLocationState
-            | null;
-
-    const [
-        currentDate,
-        setCurrentDate,
-    ] = useState(
-        () => new Date(),
-    );
-
-    const [
-        targetDate,
-        setTargetDate,
-    ] = useState(
-        () => new Date(),
-    );
-
-    const [
-        mealType,
-        setMealType,
-    ] = useState<MealType>(
-        '朝食',
-    );
-
-    const [
-        riceAmount,
-        setRiceAmount,
-    ] = useState(
-        10,
-    );
-
-    const [
-        sideDishAmount,
-        setSideDishAmount,
-    ] = useState(
-        10,
-    );
-
-    const [
-        medication,
-        setMedication,
-    ] = useState(
-        '食後薬',
-    );
-
-    const [
-        eyeDrops,
-        setEyeDrops,
-    ] = useState(
-        '○',
-    );
-
-    const [
-        oralCare,
-        setOralCare,
-    ] = useState(
-        'はみがき',
-    );
-
-    const [
-        memo,
-        setMemo,
-    ] = useState(
-        '',
-    );
-
-
-    const [
-        mealRecords,
-        setMealRecords,
-    ] = useState<MealRecord[]>([
-        {
-            id: 1,
-            mealType: '朝食',
-            riceAmount: 10,
-            sideDishAmount: 10,
-            medication: '食後薬',
-            eyeDrops: '○',
-            oralCare: 'はみがき',
-            memo: '味噌汁が冷たかった',
-        },
-        {
-            id: 2,
-            mealType: '昼食',
-            riceAmount: 6,
-            sideDishAmount: 6,
-            medication: '食後薬',
-            eyeDrops: '○',
-            oralCare: 'うがい',
-            memo: '',
-        },
-    ]);
-
-    const [
-        vitalForm,
-        setVitalForm,
-    ] = useState<VitalForm>({
-        height: '',
-        weight: '',
-        systolicBloodPressure: '',
-        diastolicBloodPressure: '',
-        temperature: '',
-        respiration: '',
-        pulse: '',
-        spo2: '',
-    });
-
-    const [
-        bathForm,
-        setBathForm,
-    ] = useState<BathForm>({
-        time: formatTime(
-            new Date(),
-        ),
-        caregiver:
-            user?.employeeName
-            ?? '',
-        systolicBloodPressure: '',
-        diastolicBloodPressure: '',
-        bathMethod: '全身浴',
-    });
-
-    const residentName =
-        locationState?.residentName
-        ?? '利用者名未取得';
-
-    const roomNumber =
-        locationState?.roomNumber
-        ?? '---';
-
-    const staffName =
-        user?.employeeName
-        ?? '担当者名未取得';
-
-    const staffRole =
-        getRoleDisplayName(
-            user?.role,
-        );
-
-    const targetDateText =
-        useMemo(
-            () => formatDate(
-                targetDate,
-            ),
-            [
-                targetDate,
-            ],
-        );
-
-    useEffect(() => {
-        const timerId =
-            window.setInterval(
-                () => {
-                    setCurrentDate(
-                        new Date(),
-                    );
-                },
-                1000,
-            );
-
-        return () => {
-            window.clearInterval(
-                timerId,
-            );
-        };
-    }, []);
-
-    const handleMoveDate = (
-        numberOfDays: number,
-    ) => {
-        setTargetDate(
-            current => {
-                const nextDate =
-                    new Date(
-                        current,
-                    );
-
-                nextDate.setDate(
-                    nextDate.getDate()
-                    + numberOfDays,
-                );
-
-                return nextDate;
-            },
-        );
-    };
-
-    const handleMealSave = () => {
-        const newRecord:
-            MealRecord = {
-                id: Date.now(),
-                mealType,
-                riceAmount,
-                sideDishAmount,
-                medication,
-                eyeDrops,
-                oralCare,
-                memo,
-            };
-
-        setMealRecords(
-            currentRecords => [
-                ...currentRecords,
-                newRecord,
-            ],
-        );
-
-        setMemo(
-            '',
-        );
-
-    };
-
-    const handleVitalChange = (
-        field: keyof VitalForm,
-        value: string,
-    ) => {
-        setVitalForm(
-            current => ({
-                ...current,
-                [field]: value,
-            }),
-        );
-    };
-
-    const handleBathChange = (
-        field: keyof BathForm,
-        value: string,
-    ) => {
-        setBathForm(
-            current => ({
-                ...current,
-                [field]: value,
-            }),
-        );
-    };
-
-    const handleVitalSave = () => {
-        window.alert(
-            'バイタル情報を保存します。API接続は後ほど実装します。',
-        );
-    };
-
-    const handleBathSave = () => {
-        window.alert(
-            '入浴情報を保存します。API接続は後ほど実装します。',
-        );
-    };
-
-    const handleBackToResidentSelect =
-        () => {
-            navigate(
-                `/residents/floors/${locationState?.floor ?? 1}`,
-            );
-        };
-
-    const handleBackToMenu =
-        () => {
-            navigate(
-                '/menu',
-            );
-        };
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { residentId } = useParams<{residentId:string}>();
+    const { user } = useAuth();
+    const locationState = location.state as RecordLocationState | null;
+    const [currentDate,setCurrentDate] = useState(()=>new Date());
+    useEffect(()=>{const timer=window.setInterval(()=>setCurrentDate(new Date()),1000);return()=>window.clearInterval(timer);},[]);
+    const { targetDate,scope,phase,loadError,caregiverError,caregivers,saving,success,failure,closeFailure,fieldError,records,
+        mealType,setMealType,riceAmount,setRiceAmount,sideDishAmount,setSideDishAmount,medication,setMedication,eyeDrops,setEyeDrops,oralCare,setOralCare,memo,setMemo,
+        vitalForm,bathForm,handleVitalChange,handleBathChange,handleMoveDate,handleMealSave,handleVitalSave,handleBathSave } = useRecordInput(locationState);
+    const residentName = records?.tenantName ?? locationState?.residentName ?? '利用者名未取得';
+    const roomNumber = locationState?.roomNumber ?? '---';
+    const staffName = user?.employeeName ?? '担当者名未取得';
+    const staffRole = getRoleDisplayName(user?.role);
+    const targetDateText = formatDate(new Date(`${targetDate}T12:00:00+09:00`));
+    const handleBackToResidentSelect = ()=>navigate(`/residents/floors/${locationState?.floor??1}`);
+    const handleBackToMenu = ()=>navigate('/menu');
 
     return (
         <main className="record-input-page">
@@ -498,7 +154,7 @@ function RecordInputPage() {
                             </h2>
 
                             <p>
-                                対象日を確認して記録してください。
+                                <span role={phase==='error'||phase==='invalid'||caregiverError?'alert':'status'} className={phase==='error'||phase==='invalid'||caregiverError?'record-feedback--error':''}>{phase==='error'||phase==='invalid'?loadError:phase==='loading'?'記録を取得しています…':caregiverError?`介護者一覧：${caregiverError}`:saving?'記録を保存しています…':success||'対象日を確認して記録してください。'}</span>
                             </p>
                         </div>
 
@@ -573,6 +229,7 @@ function RecordInputPage() {
                         </div>
                     </div>
 
+                    <fieldset key={scope} className="record-input-form" disabled={phase !== 'ready' || saving !== null}>
                     <div className="record-input-main-grid">
                         <section className="record-panel record-panel--meal">
                             <div className="record-panel__header">
@@ -596,7 +253,7 @@ function RecordInputPage() {
                                         handleMealSave
                                     }
                                 >
-                                    記録
+                                    {saving === 'meal' ? '保存中…' : '記録'}
                                 </button>
                             </div>
 
@@ -614,7 +271,7 @@ function RecordInputPage() {
                                         ごはん
                                     </label>
 
-                                    <RecordInputField id="rice-amount" label="ごはん" kind="select" value={String(riceAmount)} displayValue={`${riceAmount}/10`} onConfirm={value => setRiceAmount(Number(value))} options={Array.from({length: 11}, (_,value) => ({value: String(value), label: String(value)}))} />
+                                    <RecordInputField error={fieldError('riceAmount','meal')} id="rice-amount" optionLayout="amount" label="ごはん" kind="select" value={String(riceAmount)} displayValue={riceAmount === '' ? '未入力' : `${riceAmount}/10`} onConfirm={setRiceAmount} options={[{value:'',label:'未入力'}, ...Array.from({length: 11}, (_,value) => ({value: String(value), label: String(value)}))]} />
                                 </div>
 
                                 <div>
@@ -622,7 +279,7 @@ function RecordInputPage() {
                                         おかず
                                     </label>
 
-                                    <RecordInputField id="side-dish-amount" label="おかず" kind="select" value={String(sideDishAmount)} displayValue={`${sideDishAmount}/10`} onConfirm={value => setSideDishAmount(Number(value))} options={Array.from({length: 11}, (_,value) => ({value: String(value), label: String(value)}))} />
+                                    <RecordInputField error={fieldError('sideDishAmount','meal')} id="side-dish-amount" optionLayout="amount" label="おかず" kind="select" value={String(sideDishAmount)} displayValue={sideDishAmount === '' ? '未入力' : `${sideDishAmount}/10`} onConfirm={setSideDishAmount} options={[{value:'',label:'未入力'}, ...Array.from({length: 11}, (_,value) => ({value: String(value), label: String(value)}))]} />
                                 </div>
                             </div>
 
@@ -632,7 +289,7 @@ function RecordInputPage() {
                                         服薬
                                     </label>
 
-                                    <RecordInputField id="medication" label="服薬" kind="select" value={medication} onConfirm={setMedication} options={[{ value: '', label: 'なし' }, { value: '食前薬', label: '食前薬' }, { value: '食後薬', label: '食後薬' }, { value: '食前後薬', label: '食前後薬' }, { value: '就寝前薬', label: '就寝前薬' }]} />
+                                    <RecordInputField error={fieldError('medicationType','meal')} id="medication" label="服薬" kind="select" value={medication} onConfirm={setMedication} options={[{value:'',label:'未選択'}, { value: 'なし', label: 'なし' }, { value: '食前薬', label: '食前薬' }, { value: '食後薬', label: '食後薬' }, { value: '食前後薬', label: '食前後薬' }, { value: '就寝前薬', label: '就寝前薬' }]} />
                                 </div>
 
                                 <div className="record-form-field">
@@ -640,7 +297,7 @@ function RecordInputPage() {
                                         点眼
                                     </label>
 
-                                    <RecordInputField id="eye-drops" label="点眼" kind="select" value={eyeDrops} onConfirm={setEyeDrops} options={[{ value: '', label: 'なし' }, { value: '○', label: '実施' }, { value: '拒否', label: '拒否' }]} />
+                                    <RecordInputField error={fieldError('eyeDrops','meal')} id="eye-drops" label="点眼" kind="select" value={eyeDrops} onConfirm={setEyeDrops} options={[{ value: '', label: '未選択' }, { value: '実施', label: '実施' }, { value: '拒否', label: '拒否' }]} />
                                 </div>
 
                                 <div className="record-form-field">
@@ -648,7 +305,7 @@ function RecordInputPage() {
                                         口腔ケア
                                     </label>
 
-                                    <RecordInputField id="oral-care" label="口腔ケア" kind="select" value={oralCare} onConfirm={setOralCare} options={[{ value: '', label: 'なし' }, { value: 'はみがき', label: 'はみがき' }, { value: 'うがい', label: 'うがい' }, { value: '義歯洗浄', label: '義歯洗浄' }]} />
+                                    <RecordInputField error={fieldError('oralCare','meal')} id="oral-care" label="口腔ケア" kind="select" value={oralCare} onConfirm={setOralCare} options={[{ value: '', label: '未選択' }, { value: 'はみがき', label: 'はみがき' }, { value: 'うがい', label: 'うがい' }, { value: '義歯洗浄', label: '義歯洗浄' }]} />
                                 </div>
                             </div>
 
@@ -658,102 +315,9 @@ function RecordInputPage() {
                                     メモ
                                 </label>
 
-                                <RecordInputField id="meal-memo" label="メモ" kind="memo" value={memo} onConfirm={setMemo} placeholder="メモを入力" />
+                                <RecordInputField error={fieldError('memo','meal')} id="meal-memo" label="メモ" kind="memo" value={memo} onConfirm={setMemo} placeholder="メモを入力" maxBytes={65535} />
                             </div>
 
-                            <div className="record-table-wrap">
-                                <table className="record-table">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                食事
-                                            </th>
-
-                                            <th>
-                                                主食
-                                            </th>
-
-                                            <th>
-                                                副食
-                                            </th>
-
-                                            <th>
-                                                服薬
-                                            </th>
-
-                                            <th>
-                                                点眼
-                                            </th>
-
-                                            <th>
-                                                口腔ケア
-                                            </th>
-
-                                            <th>
-                                                メモ
-                                            </th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        {mealRecords.map(
-                                            record => (
-                                                <tr
-                                                    key={
-                                                        record.id
-                                                    }
-                                                >
-                                                    <td>
-                                                        {
-                                                            record.mealType
-                                                        }
-                                                    </td>
-
-                                                    <td>
-                                                        {
-                                                            record.riceAmount
-                                                        }/10
-                                                    </td>
-
-                                                    <td>
-                                                        {
-                                                            record.sideDishAmount
-                                                        }/10
-                                                    </td>
-
-                                                    <td>
-                                                        {
-                                                            record.medication
-                                                            || '-'
-                                                        }
-                                                    </td>
-
-                                                    <td>
-                                                        {
-                                                            record.eyeDrops
-                                                            || '-'
-                                                        }
-                                                    </td>
-
-                                                    <td>
-                                                        {
-                                                            record.oralCare
-                                                            || '-'
-                                                        }
-                                                    </td>
-
-                                                    <td>
-                                                        {
-                                                            record.memo
-                                                            || '-'
-                                                        }
-                                                    </td>
-                                                </tr>
-                                            ),
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
                         </section>
 
                         <section className="record-panel record-panel--vital">
@@ -782,60 +346,54 @@ function RecordInputPage() {
                                 </button>
                             </div>
 
-                            <p className="record-panel__time">
-                                {targetDateText}{' '}
-                                {formatTime(
-                                    currentDate,
-                                )}
-                            </p>
 
                             <div className="record-vital-grid">
                                 <label htmlFor="systolic">
                                     血圧 上
                                 </label>
 
-                                <RecordInputField id="systolic" label="血圧 上" kind="number" value={vitalForm.systolicBloodPressure} onConfirm={value => handleVitalChange('systolicBloodPressure', value)} />
+                                <RecordInputField error={fieldError('systolicBloodPressure','vital')} id="systolic" label="血圧 上" kind="number" value={vitalForm.systolicBloodPressure} onConfirm={value => handleVitalChange('systolicBloodPressure', value)} max={65535} />
 
                                 <label htmlFor="diastolic">
                                     血圧 下
                                 </label>
 
-                                <RecordInputField id="diastolic" label="血圧 下" kind="number" value={vitalForm.diastolicBloodPressure} onConfirm={value => handleVitalChange('diastolicBloodPressure', value)} />
+                                <RecordInputField error={fieldError('diastolicBloodPressure','vital')} id="diastolic" label="血圧 下" kind="number" value={vitalForm.diastolicBloodPressure} onConfirm={value => handleVitalChange('diastolicBloodPressure', value)} max={65535} />
 
                                 <label htmlFor="temperature">
                                     体温（℃）
                                 </label>
 
-                                <RecordInputField id="temperature" label="体温（℃）" kind="number" value={vitalForm.temperature} onConfirm={value => handleVitalChange('temperature', value)} decimal decimalPlaces={1} />
+                                <RecordInputField error={fieldError('temperatureC','vital')} id="temperature" label="体温（℃）" kind="number" value={vitalForm.temperature} onConfirm={value => handleVitalChange('temperature', value)} decimal decimalPlaces={1} max={999.9} />
 
                                 <label htmlFor="respiration">
                                     呼吸（回/分）
                                 </label>
 
-                                <RecordInputField id="respiration" label="呼吸（回/分）" kind="number" value={vitalForm.respiration} onConfirm={value => handleVitalChange('respiration', value)} />
+                                <RecordInputField error={fieldError('respirationRate','vital')} id="respiration" label="呼吸（回/分）" kind="number" value={vitalForm.respiration} onConfirm={value => handleVitalChange('respiration', value)} max={65535} />
 
                                 <label htmlFor="pulse">
                                     脈拍（回/分）
                                 </label>
 
-                                <RecordInputField id="pulse" label="脈拍（回/分）" kind="number" value={vitalForm.pulse} onConfirm={value => handleVitalChange('pulse', value)} />
+                                <RecordInputField error={fieldError('pulseRate','vital')} id="pulse" label="脈拍（回/分）" kind="number" value={vitalForm.pulse} onConfirm={value => handleVitalChange('pulse', value)} max={65535} />
 
                                 <label htmlFor="spo2">
                                     SpO2（%）
                                 </label>
 
-                                <RecordInputField id="spo2" label="SpO2（%）" kind="number" value={vitalForm.spo2} onConfirm={value => handleVitalChange('spo2', value)} />
+                                <RecordInputField error={fieldError('spo2Percent','vital')} id="spo2" label="SpO2（%）" kind="number" value={vitalForm.spo2} onConfirm={value => handleVitalChange('spo2', value)} decimal decimalPlaces={1} max={999.9} />
                                 <label htmlFor="height">
                                     身長（cm）
                                 </label>
 
-                                <RecordInputField id="height" label="身長（cm）" kind="number" value={vitalForm.height} onConfirm={value => handleVitalChange('height', value)} decimal />
+                                <RecordInputField error={fieldError('heightCm','vital')} id="height" label="身長（cm）" kind="number" value={vitalForm.height} onConfirm={value => handleVitalChange('height', value)} decimal decimalPlaces={1} max={9999.9} />
 
                                 <label htmlFor="weight">
                                     体重（kg）
                                 </label>
 
-                                <RecordInputField id="weight" label="体重（kg）" kind="number" value={vitalForm.weight} onConfirm={value => handleVitalChange('weight', value)} decimal />
+                                <RecordInputField error={fieldError('weightKg','vital')} id="weight" label="体重（kg）" kind="number" value={vitalForm.weight} onConfirm={value => handleVitalChange('weight', value)} decimal decimalPlaces={1} max={9999.9} />
 
                             </div>
                         </section>
@@ -867,20 +425,13 @@ function RecordInputPage() {
                             </div>
 
                             <div className="record-bath-fields">
-                                <div className="record-form-field">
-                                    <label htmlFor="bath-time">
-                                        時刻
-                                    </label>
-
-                                    <RecordInputField id="bath-time" label="時刻" kind="time" value={bathForm.time} onConfirm={value => handleBathChange('time', value)} />
-                                </div>
 
                                 <div className="record-form-field">
                                     <label htmlFor="caregiver">
                                         介護者
                                     </label>
 
-                                    <RecordInputField id="caregiver" label="介護者" kind="text" value={bathForm.caregiver} onConfirm={value => handleBathChange('caregiver', value)} />
+                                    <RecordInputField error={fieldError('caregiverCode','bath')} id="caregiver" label="介護者" kind="select" value={bathForm.caregiver} displayValue={caregivers.find(value=>value.staffCode===bathForm.caregiver)?.staffName || bathForm.caregiverName || '介護者を選択'} onConfirm={value => handleBathChange('caregiver', value)} options={[{value:'',label:'未選択'},...caregivers.map(value=>({value:value.staffCode,label:caregivers.filter(person=>person.staffName===value.staffName).length>1?`${value.staffName}（${value.staffCode}）`:value.staffName}))]} />
                                 </div>
 
                                 <div className="record-form-field">
@@ -888,7 +439,7 @@ function RecordInputPage() {
                                         血圧 上
                                     </label>
 
-                                    <RecordInputField id="bath-systolic" label="血圧 上" kind="number" value={bathForm.systolicBloodPressure} onConfirm={value => handleBathChange('systolicBloodPressure', value)} />
+                                    <RecordInputField error={fieldError('systolicBloodPressure','bath')} id="bath-systolic" label="血圧 上" kind="number" value={bathForm.systolicBloodPressure} onConfirm={value => handleBathChange('systolicBloodPressure', value)} max={65535} />
                                 </div>
 
                                 <div className="record-form-field">
@@ -896,7 +447,7 @@ function RecordInputPage() {
                                         血圧 下
                                     </label>
 
-                                    <RecordInputField id="bath-diastolic" label="血圧 下" kind="number" value={bathForm.diastolicBloodPressure} onConfirm={value => handleBathChange('diastolicBloodPressure', value)} />
+                                    <RecordInputField error={fieldError('diastolicBloodPressure','bath')} id="bath-diastolic" label="血圧 下" kind="number" value={bathForm.diastolicBloodPressure} onConfirm={value => handleBathChange('diastolicBloodPressure', value)} max={65535} />
                                 </div>
 
                                 <div className="record-form-field">
@@ -904,167 +455,17 @@ function RecordInputPage() {
                                         入浴方法
                                     </label>
 
-                                    <RecordInputField id="bath-method" label="入浴方法" kind="select" value={bathForm.bathMethod} onConfirm={value => handleBathChange('bathMethod', value)} options={[{ value: '全身浴', label: '全身浴' }, { value: '半身浴', label: '半身浴' }, { value: 'シャワー浴', label: 'シャワー浴' }, { value: '機械浴', label: '機械浴' }, { value: '清拭', label: '清拭' }]} />
+                                    <RecordInputField error={fieldError('bathMethod','bath')} id="bath-method" label="入浴方法" kind="select" value={bathForm.bathMethod} onConfirm={value => handleBathChange('bathMethod', value)} options={[{ value: '全身浴', label: '全身浴' }, { value: '半身浴', label: '半身浴' }, { value: 'シャワー浴', label: 'シャワー浴' }, { value: '機械浴', label: '機械浴' }, { value: '清拭', label: '清拭' }]} />
                                 </div>
                             </div>
                         </section>
                     </div>
 
-                    <section className="record-history">
-                        <div className="record-history__header">
-                            <div>
-                                <h2>
-                                    記録履歴
-                                </h2>
+                    </fieldset>
 
-                                <p>
-                                    過去の食事、バイタル、入浴記録を表示します。
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="record-table-wrap">
-                            <table className="record-table record-history-table">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            記録日
-                                        </th>
-
-                                        <th>
-                                            記録者
-                                        </th>
-
-                                        <th>
-                                            身長
-                                        </th>
-
-                                        <th>
-                                            体重
-                                        </th>
-
-                                        <th>
-                                            体温
-                                        </th>
-
-                                        <th>
-                                            脈拍
-                                        </th>
-
-                                        <th>
-                                            血圧
-                                        </th>
-
-                                        <th>
-                                            呼吸
-                                        </th>
-
-                                        <th>
-                                            SpO2
-                                        </th>
-
-                                        <th>
-                                            朝食
-                                        </th>
-
-                                        <th>
-                                            昼食
-                                        </th>
-
-                                        <th>
-                                            おやつ
-                                        </th>
-
-                                        <th>
-                                            夕食
-                                        </th>
-
-                                        <th>
-                                            入浴時刻
-                                        </th>
-
-                                        <th>
-                                            介護者
-                                        </th>
-
-                                        <th>
-                                            方法
-                                        </th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            2026/03/02
-                                        </td>
-
-                                        <td>
-                                            {staffName}
-                                        </td>
-
-                                        <td>
-                                            166.2
-                                        </td>
-
-                                        <td>
-                                            63.3
-                                        </td>
-
-                                        <td>
-                                            36.5
-                                        </td>
-
-                                        <td>
-                                            65
-                                        </td>
-
-                                        <td>
-                                            123/66
-                                        </td>
-
-                                        <td>
-                                            12
-                                        </td>
-
-                                        <td>
-                                            99
-                                        </td>
-
-                                        <td>
-                                            10/10
-                                        </td>
-
-                                        <td>
-                                            10/10
-                                        </td>
-
-                                        <td>
-                                            10/10
-                                        </td>
-
-                                        <td>
-                                            10/10
-                                        </td>
-
-                                        <td>
-                                            20:30
-                                        </td>
-
-                                        <td>
-                                            {staffName}
-                                        </td>
-
-                                        <td>
-                                            半身浴
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </section>
                 </section>
             </div>
+            {failure && !failure.dismissed && <RecordErrorDialog message={failure.message} onClose={closeFailure} />}
         </main>
     );
 }

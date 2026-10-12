@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk.Web"><PropertyGroup><TargetFramework>net9.0</TargetFramework><OutputType>Exe</OutputType><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings></PropertyGroup><ItemGroup><Reference Include="../first-floor/server-build/*.dll" /><Compile Include="../staff-maintenance/MemoryStaffRepository.cs" Link="MemoryStaffRepository.cs" />
+<Compile Include="../resident-maintenance/MemoryResidentRepository.cs" Link="MemoryResidentRepository.cs" />
+<Compile Include="../first-floor/MemoryResidentSelectionRepository.cs" Link="MemoryResidentSelectionRepository.cs" />
+</ItemGroup></Project>

@@ -1,0 +1,2 @@
+from pathlib import Path
+p=Path('ohana.client/src/styles/RecordInputPage.css');s=p.read_text(encoding='utf-8');s=s.replace('border-radius: 20px; background: rgba(255,255,255,.95)', 'border-radius: 26px; background: rgba(255,255,255,.95)').replace('border-radius: 14px; background: white; box-shadow: 0 10px', 'border-radius: 18px; background: white; box-shadow: 0 10px');p.write_text(s,encoding='utf-8')

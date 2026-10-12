@@ -14,19 +14,24 @@ type Props = {
     decimalPlaces?: number;
     displayValue?: string;
     placeholder?: string;
+    error?: string;
+    max?: number;
+    maxBytes?: number;
+    optionLayout?: 'list' | 'amount';
 };
 
 export function RecordInputField(props: Props) {
     const [open, setOpen] = useState(false);
     return <>
-        <button id={props.id} type="button" className={`record-popup-field${props.kind === 'memo' ? ' record-popup-field--memo' : ''}`} aria-label={props.label} aria-haspopup="dialog" onClick={() => setOpen(true)}>
-            {props.displayValue ?? ((props.kind === 'select' ? props.options?.find(option => option.value === props.value)?.label : props.value) || props.placeholder || '未入力')}
+        <button id={props.id} type="button" className={`record-popup-field${props.kind === 'memo' ? ' record-popup-field--memo' : ''}${props.error ? ' record-popup-field--error' : ''}`} aria-label={props.label} aria-invalid={!!props.error} aria-haspopup="dialog" onClick={() => setOpen(true)}>
+            {props.displayValue ?? ((props.kind === 'select' ? (props.options?.find(option => option.value === props.value)?.label ?? props.value) : props.value) || props.placeholder || '未入力')}
+            {props.error && <small>{props.error}</small>}
         </button>
         {open && createPortal(<InputDialog {...props} onCancel={() => setOpen(false)} onConfirm={value => { props.onConfirm(value); setOpen(false); }} />, document.body)}
     </>;
 }
 
-function InputDialog({ label, value, onConfirm, onCancel, kind, options, decimal, decimalPlaces }: Props & { onCancel: () => void }) {
+function InputDialog({ label, value, onConfirm, onCancel, kind, options, decimal, decimalPlaces, max, maxBytes, optionLayout }: Props & { onCancel: () => void }) {
     const [draft, setDraft] = useState(value);
     const [error, setError] = useState('');
     const dialogRef = useRef<HTMLDialogElement>(null);
@@ -57,8 +62,10 @@ function InputDialog({ label, value, onConfirm, onCancel, kind, options, decimal
             if (decimalPlaces !== undefined && (draft.split('.')[1]?.length ?? 0) > decimalPlaces) {
                 setError(`小数点以下は${decimalPlaces}桁まで入力してください。`); return;
             }
+            if (max !== undefined && Number(draft) > max) { setError(`0～${max}の範囲で入力してください。`); return; }
         }
-        if (kind === 'time' && draft !== '' && !/^([01]\d|2[0-3]):[0-5]\d$/.test(draft)) {
+        if (maxBytes !== undefined && new TextEncoder().encode(draft).length > maxBytes) { setError('保存できる文字数を超えています。'); return; }
+        if (kind === 'time' && draft !== '' && !/^([01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?$/.test(draft)) {
             setError('時刻を選択してください。'); return;
         }
         onConfirm(draft);
@@ -71,7 +78,7 @@ function InputDialog({ label, value, onConfirm, onCancel, kind, options, decimal
     }}>
         <div className="record-input-dialog__header"><h2 id={titleId}>{label}</h2><p>「決定」で入力値を反映します。</p></div>
         <div className="record-input-dialog__body">
-            {kind === 'select' && <div className={`record-dialog-options${options?.length === 11 ? ' record-dialog-options--amount' : ''}`}>
+            {kind === 'select' && <div className={`record-dialog-options${optionLayout === 'amount' ? ' record-dialog-options--amount' : ''}`}>
                 {options?.map(option => <button key={option.value} type="button" aria-pressed={draft === option.value} onClick={() => setDraft(option.value)}>{option.label}</button>)}
             </div>}
             {kind === 'number' && <>

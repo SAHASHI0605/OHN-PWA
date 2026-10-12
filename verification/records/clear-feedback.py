@@ -1,0 +1,2 @@
+from pathlib import Path
+p=Path('ohana.client/src/hooks/useRecordInput.ts');s=p.read_text(encoding='utf-8');s=s.replace('const setMealType=(type:MealType)=>{if(lock.current)return;epoch.current++;', 'const setMealType=(type:MealType)=>{if(lock.current)return;epoch.current++;setSuccess(null);setFailure(null);');s=s.replace('handleMoveDate:(delta:number)=>{epoch.current++;', 'handleMoveDate:(delta:number)=>{epoch.current++;setSuccess(null);setFailure(null);');p.write_text(s,encoding='utf-8')

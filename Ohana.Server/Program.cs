@@ -64,6 +64,9 @@ builder.Services.AddScoped<IResidentMaintenanceService, ResidentMaintenanceServi
 builder.Services.AddScoped<ResidentVersion>();
 builder.Services.AddScoped<IResidentSelectionRepository, ResidentSelectionRepository>();
 builder.Services.AddScoped<IResidentSelectionService, ResidentSelectionService>();
+builder.Services.AddScoped<IRecordRepository, RecordRepository>();
+builder.Services.AddScoped<IRecordService, RecordService>();
+builder.Services.AddScoped<RecordVersion>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

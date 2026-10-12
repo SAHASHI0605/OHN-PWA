@@ -1,0 +1,2 @@
+from pathlib import Path
+p=Path('ohana.client/src/styles/RecordInputPage.css');s=p.read_text(encoding='utf-8');s=s.replace('.record-input-clock { color:', '.record-input-clock { line-height: 1.25; color:').replace('.record-input-resident span { color:', '.record-input-resident span { line-height: 1.2; color:').replace('.record-input-header { padding: 3px 10px; }', '.record-input-header { padding: 3px 10px; }\n    .record-input-brand { justify-content: center; }\n    .record-input-brand img { max-width: 200px; }');p.write_text(s,encoding='utf-8')

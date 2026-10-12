@@ -1,517 +1,101 @@
 .record-input-page {
-    min-width: 1024px;
+    box-sizing: border-box;
+    min-width: 0;
     min-height: 100vh;
-    padding: 18px;
+    min-height: 100svh;
+    min-height: 100dvh;
+    padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
     font-family: "Yu Gothic UI", "Meiryo", sans-serif;
     color: #1d271d;
-    background: radial-gradient( circle at 8% 8%, rgba(137, 197, 59, 0.18), transparent 24% ), radial-gradient( circle at 92% 14%, rgba(32, 163, 158, 0.13), transparent 23% ), linear-gradient( 135deg, #f8fbf2 0%, #eef6e3 52%, #f9fcf4 100% );
+    background: radial-gradient(circle at 8% 8%, rgba(137,197,59,.18), transparent 24%), radial-gradient(circle at 92% 14%, rgba(32,163,158,.13), transparent 23%), linear-gradient(135deg, #f8fbf2, #eef6e3 52%, #f9fcf4);
 }
-
-    .record-input-page * {
-        box-sizing: border-box;
-    }
-
-.record-input-shell {
-    width: min(1480px, 100%);
-    min-height: calc(100vh - 36px);
-    margin: 0 auto;
-    overflow: hidden;
-    border: 1px solid rgba(116, 181, 44, 0.2);
-    border-radius: 26px;
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 18px 50px rgba(72, 112, 29, 0.17);
+.record-input-page * { box-sizing: border-box; }
+.record-input-shell { width: min(1480px, 100%); margin: 0 auto; overflow: hidden; border: 1px solid rgba(116,181,44,.2); border-radius: 26px; background: rgba(255,255,255,.95); box-shadow: 0 18px 50px rgba(72,112,29,.17); }
+.record-input-header { padding: 6px 12px; display: grid; grid-template-columns: minmax(170px,230px) minmax(140px,1fr) auto; gap: 12px; align-items: center; border-bottom: 1px solid #e5edd9; background: rgba(255,255,255,.88); }
+.record-input-brand { min-width: 0; padding: 5px 8px; display: flex; align-items: center; border: 1px solid #e9f0df; border-radius: 12px; background: white; box-shadow: 0 9px 22px rgba(96,132,39,.07); }
+.record-input-brand img { display: block; width: 100%; max-width: 230px; height: auto; }
+.record-input-title__tag { display: inline-block; margin-bottom: 2px; padding: 2px 8px; border-radius: 999px; color: #58751d; background: #e7f3d3; font-size: 10px; font-weight: 800; letter-spacing: .04em; }
+.record-input-title h1 { margin: 0; font-size: 26px; line-height: 1.15; }
+.record-input-title p { margin: 3px 0 0; color: #697568; font-size: 12px; }
+.record-input-account { display: grid; justify-items: end; gap: 3px; }
+.record-input-clock { line-height: 1.25; color: #66705f; font-size: 12px; font-weight: 800; }
+.record-input-account__row { display: flex; align-items: center; gap: 6px; }
+.record-input-staff { min-height: 44px; padding: 4px 8px; display: flex; align-items: center; gap: 6px; border: 1px solid #deebcd; border-radius: 11px; background: #fbfdf8; }
+.record-input-staff__avatar { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 9px; color: white; background: linear-gradient(135deg,#74b52c,#1fa39e); }
+.record-input-staff__text { display: grid; gap: 1px; }
+.record-input-staff__text strong { font-size: 12px; }
+.record-input-staff__text span { color: #6f796a; font-size: 10px; }
+.record-input-header-button { min-height: 44px; padding: 0 10px; border: 1px solid #d5e2c3; border-radius: 10px; color: #46523f; background: white; font-size: 12px; font-weight: 800; cursor: pointer; }
+.record-input-header-button:hover { border-color: #9fc96a; background: #f6faef; }
+.record-input-content { padding: 8px 12px; display: flex; flex-direction: column; gap: 6px; }
+.record-input-date-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.record-input-date-toolbar > div:first-child { min-width: 0; }
+.record-input-date-toolbar h2 { margin: 0 0 2px; font-size: 18px; line-height: 1.2; }
+.record-input-date-toolbar p { margin: 0; color: #697568; font-size: 12px; }
+.record-feedback--error { color: #922d2d; }
+.record-input-date-controls { display: flex; align-items: center; gap: 8px; }
+.record-input-date-controls button { min-width: 64px; min-height: 44px; padding: 6px 10px; border: 1px solid #d5e2c3; border-radius: 10px; color: #46523f; background: #f8fbf4; font-weight: 800; cursor: pointer; }
+.record-input-date-controls strong { min-width: 135px; color: #47631f; text-align: center; font-size: 15px; }
+.record-input-resident { padding: 6px 12px; display: grid; grid-template-columns: minmax(0,1.5fr) minmax(0,.6fr) minmax(0,.85fr) minmax(0,.9fr); gap: 8px; border: 1px solid #d7e4c7; border-radius: 12px; background: #edf6df; }
+.record-input-resident > div { min-width: 0; display: grid; align-content: start; gap: 2px; }
+.record-input-resident span { line-height: 1.2; color: #6c7867; font-size: 10px; font-weight: 800; }
+.record-input-resident strong { color: #435f1d; font-size: 15px; overflow-wrap: anywhere; line-height: 1.2; }
+.record-input-form { min-width: 0; margin: 0; padding: 0; border: 0; }
+.record-input-main-grid { display: grid; grid-template-columns: minmax(0,1.55fr) minmax(0,1fr) minmax(0,1fr); gap: 8px; align-items: stretch; }
+.record-panel { min-width: 0; padding: 8px; border: 1px solid #dce6d3; border-radius: 18px; background: white; box-shadow: 0 10px 24px rgba(72,112,29,.07); }
+.record-panel__header { min-height: 44px; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; gap: 6px; border-bottom: 1px solid #e5ecdf; }
+.record-panel__header > div { min-width: 0; display: flex; align-items: center; gap: 6px; }
+.record-panel__header h2 { margin: 0; font-size: 15px; line-height: 1.3; }
+.record-panel__icon { width: 28px; height: 28px; flex-shrink: 0; display: grid; place-items: center; border-radius: 9px; color: white; font-size: 18px; font-weight: 900; }
+.record-panel__icon--meal { background: #7b6ca8; }
+.record-panel__icon--vital { background: #b14c4c; }
+.record-panel__icon--bath { background: #4ea0b4; }
+.record-save-button { flex-shrink: 0; min-width: 64px; min-height: 44px; padding: 0 10px; border: 0; border-radius: 10px; color: white; background: linear-gradient(135deg,#74b52c,#609a22); font-weight: 800; cursor: pointer; box-shadow: 0 6px 14px rgba(76,120,31,.2); }
+.record-save-button:hover { filter: brightness(.96); }
+.record-form-field { min-width: 0; display: grid; gap: 4px; }
+.record-form-field label { color: #4e5b4b; font-size: 13px; font-weight: 800; }
+.record-form-grid { margin: 10px 0; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px; }
+.record-meal-sliders { margin-top: 10px; padding: 8px; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; border: 1px solid #e2e9dc; border-radius: 12px; background: #f8fbf5; }
+.record-meal-sliders > div { min-width: 0; display: grid; grid-template-columns: auto minmax(0,1fr); gap: 6px; align-items: center; }
+.record-meal-sliders label { font-size: 13px; font-weight: 800; }
+.record-input-page .record-popup-field { min-height: 44px; padding: 6px 8px; font-size: 16px; }
+.record-panel--meal > .record-form-field:has(.record-popup-field--memo) { margin: 0; }
+.record-input-page .record-popup-field--memo { height: 104px; min-height: 104px; max-height: 104px; overflow: auto; text-align: left; }
+.record-vital-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(72px,.85fr); gap: 3px 6px; align-items: center; }
+.record-vital-grid label { min-width: 0; color: #4e5b4b; font-size: 14px; font-weight: 800; text-align: right; }
+.record-bath-fields { display: grid; gap: 10px; }
+.record-input-form:disabled .record-popup-field { cursor: default; opacity: .65; }
+.record-popup-field--error { border: 2px solid #b14c4c; }
+.record-popup-field--error small { display: block; color: #922d2d; font-size: 12px; }
+.record-input-page button:focus-visible { outline: 3px solid #1fa39e; outline-offset: 2px; }
+@media (max-width: 850px) {
+    .record-input-header { grid-template-columns: minmax(160px,.85fr) minmax(120px,.7fr) minmax(0,1.3fr); gap: 8px; }
+    .record-input-title p { display: none; }
+    .record-input-account__row { flex-wrap: wrap; justify-content: flex-end; }
+    .record-input-staff { min-height: 36px; }
+    .record-input-header-button { font-size: 11px; padding: 0 8px; }
+    .record-input-main-grid { grid-template-columns: minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr); gap: 6px; }
+    .record-panel__header h2 { font-size: 14px; }
+    .record-panel__icon { width: 24px; height: 24px; }
+    .record-vital-grid label { font-size: 13px; }
 }
-
-/* ヘッダー */
-
-.record-input-header {
-    min-height: 104px;
-    padding: 18px 26px;
-    display: grid;
-    grid-template-columns: minmax(250px, 390px) 1fr auto;
-    gap: 22px;
-    align-items: center;
-    border-bottom: 1px solid #e5edd9;
-    background: rgba(255, 255, 255, 0.88);
+@media (max-height: 700px) {
+    .record-input-page { padding: 4px; }
+    .record-input-header { padding: 3px 10px; }
+    .record-input-brand { justify-content: center; }
+    .record-input-brand img { max-width: 200px; }
+    .record-input-title p, .record-input-date-toolbar h2 { display: none; }
+    .record-input-content { padding: 4px 10px; gap: 4px; }
+    .record-input-resident { padding: 4px 12px; }
+    .record-vital-grid { row-gap: 2px; }
 }
-
-.record-input-brand {
-    min-height: 66px;
-    padding: 9px 16px;
-    display: flex;
-    align-items: center;
-    border: 1px solid #e9f0df;
-    border-radius: 17px;
-    background: #ffffff;
-    box-shadow: 0 9px 22px rgba(96, 132, 39, 0.07);
-}
-
-    .record-input-brand img {
-        display: block;
-        width: 100%;
-        max-width: 310px;
-        height: auto;
-    }
-
-.record-input-title__tag {
-    display: inline-block;
-    margin-bottom: 5px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    color: #58751d;
-    background: #e7f3d3;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-}
-
-.record-input-title h1 {
-    margin: 0;
-    font-size: clamp(25px, 2.3vw, 34px);
-    line-height: 1.15;
-}
-
-.record-input-title p {
-    margin: 6px 0 0;
-    color: #697568;
-    font-size: 13px;
-}
-
-.record-input-account {
-    display: grid;
-    justify-items: end;
-    gap: 8px;
-}
-
-.record-input-clock {
-    color: #66705f;
-    font-size: 13px;
-    font-weight: 800;
-}
-
-.record-input-account__row {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-}
-
-.record-input-staff {
-    min-height: 42px;
-    padding: 7px 12px 7px 8px;
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    border: 1px solid #deebcd;
-    border-radius: 13px;
-    background: #fbfdf8;
-}
-
-.record-input-staff__avatar {
-    width: 31px;
-    height: 31px;
-    display: grid;
-    place-items: center;
-    border-radius: 10px;
-    color: #ffffff;
-    background: linear-gradient( 135deg, #74b52c, #1fa39e );
-}
-
-.record-input-staff__text {
-    display: grid;
-    gap: 1px;
-}
-
-    .record-input-staff__text strong {
-        font-size: 13px;
-    }
-
-    .record-input-staff__text span {
-        color: #6f796a;
-        font-size: 10px;
-    }
-
-.record-input-header-button {
-    min-height: 42px;
-    padding: 0 14px;
-    border: 1px solid #d5e2c3;
-    border-radius: 11px;
-    color: #46523f;
-    background: #ffffff;
-    font-weight: 800;
-    cursor: pointer;
-}
-
-    .record-input-header-button:hover {
-        border-color: #9fc96a;
-        background: #f6faef;
-    }
-
-/* コンテンツ */
-
-.record-input-content {
-    padding: 20px 24px 28px;
-}
-
-.record-input-date-toolbar {
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 18px;
-}
-
-    .record-input-date-toolbar h2 {
-        margin: 0 0 4px;
-        font-size: 20px;
-    }
-
-    .record-input-date-toolbar p {
-        margin: 0;
-        color: #697568;
-        font-size: 12px;
-    }
-
-.record-input-date-controls {
-    min-height: 48px;
-    padding: 6px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border: 1px solid #dce8ce;
-    border-radius: 14px;
-    background: #ffffff;
-}
-
-    .record-input-date-controls button {
-        min-width: 72px;
-        min-height: 36px;
-        border: 1px solid #d5e2c3;
-        border-radius: 10px;
-        color: #46523f;
-        background: #f8fbf4;
-        font-weight: 800;
-        cursor: pointer;
-    }
-
-    .record-input-date-controls strong {
-        min-width: 145px;
-        color: #47631f;
-        text-align: center;
-        font-size: 15px;
-    }
-
-.record-input-resident {
-    margin-bottom: 16px;
-    padding: 12px 16px;
-    display: grid;
-    grid-template-columns: minmax(220px, 1.4fr) minmax(130px, 0.7fr) minmax(130px, 0.7fr) minmax(180px, 1fr);
-    gap: 10px;
-    border: 1px solid #d7e4c7;
-    border-radius: 15px;
-    background: #edf6df;
-}
-
-    .record-input-resident > div {
-        display: grid;
-        gap: 3px;
-    }
-
-    .record-input-resident span {
-        color: #6c7867;
-        font-size: 10px;
-        font-weight: 800;
-    }
-
-    .record-input-resident strong {
-        color: #435f1d;
-        font-size: 15px;
-    }
-
-/* 入力パネル */
-
-.record-input-main-grid {
-    display: grid;
-    grid-template-columns: minmax(480px, 1.9fr) minmax(250px, 1fr) minmax(250px, 1fr);
-    gap: 14px;
-    align-items: stretch;
-}
-
-.record-panel {
-    min-width: 0;
-    padding: 16px;
-    border: 1px solid #dce6d3;
-    border-radius: 18px;
-    background: #ffffff;
-    box-shadow: 0 10px 24px rgba(72, 112, 29, 0.07);
-}
-
-.record-panel__header {
-    min-height: 42px;
-    margin-bottom: 16px;
-    padding-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    border-bottom: 1px solid #e5ecdf;
-}
-
-    .record-panel__header > div {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .record-panel__header h2 {
-        margin: 0;
-        font-size: 15px;
-    }
-
-.record-panel__icon {
-    width: 32px;
-    height: 32px;
-    display: grid;
-    place-items: center;
-    border-radius: 10px;
-    color: #ffffff;
-    font-size: 18px;
-    font-weight: 900;
-}
-
-.record-panel__icon--meal {
-    background: #7b6ca8;
-}
-
-.record-panel__icon--vital {
-    background: #b14c4c;
-}
-
-.record-panel__icon--bath {
-    background: #4ea0b4;
-}
-
-.record-save-button {
-    min-width: 72px;
-    min-height: 36px;
-    padding: 0 14px;
-    border: 0;
-    border-radius: 10px;
-    color: #ffffff;
-    background: linear-gradient( 135deg, #74b52c, #609a22 );
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 0 6px 14px rgba(76, 120, 31, 0.2);
-}
-
-    .record-save-button:hover {
-        filter: brightness(0.96);
-    }
-
-.record-form-field {
-    display: grid;
-    gap: 6px;
-}
-
-    .record-form-field label {
-        color: #4e5b4b;
-        font-size: 12px;
-        font-weight: 800;
-    }
-
-    .record-form-field input,
-    .record-form-field select,
-    .record-form-field textarea,
-    .record-vital-grid input {
-        width: 100%;
-        min-height: 42px;
-        border: 1px solid #d4dfca;
-        border-radius: 10px;
-        color: #202820;
-        background: #fbfdf9;
-        padding: 8px 10px;
-        font: inherit;
-        outline: none;
-    }
-
-        .record-form-field input:focus,
-        .record-form-field select:focus,
-        .record-form-field textarea:focus,
-        .record-vital-grid input:focus {
-            border-color: #74b52c;
-            box-shadow: 0 0 0 3px rgba(116, 181, 44, 0.13);
-        }
-
-    .record-form-field textarea {
-        min-height: 72px;
-        resize: vertical;
-    }
-
-.record-form-grid {
-    margin-top: 14px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-}
-
-.record-meal-sliders {
-    margin-top: 14px;
-    padding: 12px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-    border: 1px solid #e2e9dc;
-    border-radius: 13px;
-    background: #f8fbf5;
-}
-
-    .record-meal-sliders > div {
-        display: grid;
-        grid-template-columns: 54px 1fr 48px;
-        gap: 8px;
-        align-items: center;
-    }
-
-    .record-meal-sliders label {
-        font-size: 12px;
-        font-weight: 800;
-    }
-
-    .record-meal-sliders input {
-        width: 100%;
-        accent-color: #74b52c;
-    }
-
-    .record-meal-sliders output {
-        color: #4f6d24;
-        font-size: 12px;
-        font-weight: 900;
-        text-align: right;
-    }
-
-.record-panel__time {
-    margin: 0 0 12px;
-    color: #6b7667;
-    text-align: center;
-    font-size: 12px;
-    font-weight: 800;
-}
-
-.record-vital-grid {
-    display: grid;
-    grid-template-columns: 1fr 100px;
-    gap: 10px 8px;
-    align-items: center;
-}
-
-    .record-vital-grid label {
-        color: #4e5b4b;
-        font-size: 12px;
-        font-weight: 800;
-        text-align: right;
-    }
-
-    .record-vital-grid input {
-        min-width: 0;
-        text-align: right;
-    }
-
-.record-bath-fields {
-    display: grid;
-    gap: 13px;
-}
-
-/* テーブル */
-
-.record-table-wrap {
-    width: 100%;
-    overflow-x: auto;
-    border: 1px solid #e0e7da;
-    border-radius: 12px;
-}
-
-.record-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #ffffff;
-    font-size: 11px;
-}
-
-    .record-table th,
-    .record-table td {
-        padding: 8px 9px;
-        border-bottom: 1px solid #e5eadf;
-        text-align: left;
-        white-space: nowrap;
-    }
-
-    .record-table th {
-        color: #5b702c;
-        background: #edf3e4;
-        font-weight: 900;
-    }
-
-    .record-table tbody tr:last-child td {
-        border-bottom: 0;
-    }
-
-    .record-table tbody tr:hover {
-        background: #fafcf7;
-    }
-
-/* 履歴 */
-
-.record-history {
-    margin-top: 16px;
-    padding: 16px;
-    border: 1px solid #dce6d3;
-    border-radius: 18px;
-    background: #ffffff;
-    box-shadow: 0 10px 24px rgba(72, 112, 29, 0.07);
-}
-
-.record-history__header {
-    margin-bottom: 12px;
-}
-
-    .record-history__header h2 {
-        margin: 0 0 4px;
-        font-size: 17px;
-    }
-
-    .record-history__header p {
-        margin: 0;
-        color: #697568;
-        font-size: 11px;
-    }
-
-.record-history-table {
-    min-width: 1300px;
-}
-
-/* タブレット横向き向け */
-
-@media (max-width: 1250px) {
-    .record-input-header {
-        grid-template-columns: minmax(230px, 310px) 1fr auto;
-        gap: 14px;
-        padding: 15px 18px;
-    }
-
-    .record-input-account__row {
-        gap: 6px;
-    }
-
-    .record-input-header-button {
-        padding: 0 10px;
-        font-size: 11px;
-    }
-
-    .record-input-main-grid {
-        grid-template-columns: minmax(430px, 1.7fr) minmax(230px, 1fr) minmax(230px, 1fr);
-        gap: 10px;
-    }
-
-    .record-panel {
-        padding: 12px;
-    }
+/* Below tablet width, keep all controls intact and confine horizontal overflow to the form. */
+@media (max-width: 600px) {
+    .record-input-header { grid-template-columns: 1fr 1fr; }
+    .record-input-account { grid-column: 1 / -1; justify-items: start; }
+    .record-input-account__row { justify-content: flex-start; }
+    .record-input-date-toolbar { align-items: flex-start; flex-direction: column; gap: 4px; }
+    .record-input-resident { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .record-input-form { overflow-x: auto; }
+    .record-input-main-grid { min-width: 700px; }
 }

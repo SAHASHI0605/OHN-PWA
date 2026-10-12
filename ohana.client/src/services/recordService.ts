@@ -1,0 +1,20 @@
+import { apiClient } from './apiClient';
+
+export type RecordKey = { roomNo: string; serialNo: string; moveInDate: string; recordDate: string };
+export type RecordAudit = { recordId: number; updatedBy: string; updatedByName: string; updatedAt: string; concurrencyToken: string };
+export type MealType = '朝食' | '昼食' | 'おやつ' | '夕食';
+export type MealValues = { performedAt: string | null; riceAmount: number | null; sideDishAmount: number | null; medicationType: string | null; eyeDrops: string | null; oralCare: string | null; memo: string | null };
+export type VitalValues = { measuredAt: string | null; heightCm: number | null; weightKg: number | null; systolicBloodPressure: number | null; diastolicBloodPressure: number | null; temperatureC: number | null; respirationRate: number | null; pulseRate: number | null; spo2Percent: number | null };
+export type BathValues = { bathedAt: string; caregiverCode: string; systolicBloodPressure: number | null; diastolicBloodPressure: number | null; bathMethod: string };
+export type MealRecord = RecordAudit & MealValues & { mealType: MealType };
+export type VitalRecord = RecordAudit & VitalValues;
+export type BathRecord = RecordAudit & BathValues & { caregiverName: string };
+export type Records = RecordKey & { tenantName: string; meals: MealRecord[]; vital: VitalRecord | null; bath: BathRecord | null };
+export type Caregiver = { staffCode: string; staffName: string };
+export type SaveResult = { recordId: number; created: boolean; message: string };
+export type RecordKind = 'meal' | 'vital' | 'bath';
+export const getRecords = (key: RecordKey, signal?: AbortSignal) => apiClient<Records>(`/records?${new URLSearchParams(key)}`, { signal, cache: 'no-store' });
+export const getCaregivers = (signal?: AbortSignal) => apiClient<Caregiver[]>('/records/caregivers', { signal, cache: 'no-store' });
+export const saveMeal = (key: RecordKey, type: MealType, value: MealValues, concurrencyToken: string) => apiClient<SaveResult>(`/records/meals/${encodeURIComponent(type)}`, {method:'PUT', body:JSON.stringify({...key,...value,concurrencyToken})});
+export const saveVital = (key: RecordKey, value: VitalValues, concurrencyToken: string) => apiClient<SaveResult>('/records/vital', {method:'PUT', body:JSON.stringify({...key,...value,concurrencyToken})});
+export const saveBath = (key: RecordKey, value: BathValues, concurrencyToken: string) => apiClient<SaveResult>('/records/bath', {method:'PUT', body:JSON.stringify({...key,...value,concurrencyToken})});

@@ -1,0 +1,2 @@
+from pathlib import Path
+p=Path('ohana.client/src/pages/RecordInputPage.tsx');s=p.read_text(encoding='utf-8');s=s.replace('id="rice-amount" label=', 'id="rice-amount" optionLayout="amount" label=').replace('id="side-dish-amount" label=', 'id="side-dish-amount" optionLayout="amount" label=');s=s.replace('label:value.staffName', "label:caregivers.filter(person=>person.staffName===value.staffName).length>1?`${value.staffName}（${value.staffCode}）`:value.staffName");p.write_text(s,encoding='utf-8')
