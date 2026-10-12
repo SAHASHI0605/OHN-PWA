@@ -28,6 +28,7 @@ type ApiRequestOptions = RequestInit & {
 async function request<T>(
     path: string,
     options: ApiRequestOptions = {},
+    blobResponse = false,
 ): Promise<T> {
     const {
         timeoutMs = DEFAULT_TIMEOUT_MS,
@@ -89,6 +90,11 @@ async function request<T>(
         const contentType =
             response.headers.get('content-type');
 
+        if (blobResponse) {
+            if (!contentType?.toLowerCase().startsWith('application/zip')) throw new ApiError('ZIPファイルを取得できませんでした。再度お試しください。', response.status);
+            return (await response.blob()) as T;
+        }
+
         if (
             contentType?.includes(
                 'application/json',
@@ -120,6 +126,9 @@ async function request<T>(
 }
 
 export const apiClient = {
+    postBlob(path: string, body: unknown, options?: ApiRequestOptions): Promise<Blob> {
+        return request<Blob>(path, { ...options, method: 'POST', body: JSON.stringify(body) }, true);
+    },
     get<T>(
         path: string,
         options?: ApiRequestOptions,

@@ -1,0 +1,25 @@
+.vital-report-page { display: grid; gap: 12px; color: #263d31; }
+.vital-report-card { background: #fff; border: 1px solid #d8e7dd; border-radius: 14px; padding: 16px 20px; box-shadow: 0 3px 10px #274c3510; }
+.vital-report-card h2 { margin: 0 0 12px; font-size: 18px; }
+.vital-report-filters { display: flex; align-items: end; gap: 16px; border: 0; margin: 0; padding: 0; }
+.vital-report-filters label { display: grid; gap: 5px; font-size: 14px; }
+.vital-report-filters select, .vital-report-filters input { height: 40px; border: 1px solid #c9ddce; border-radius: 7px; padding: 6px 12px; font: inherit; background: #fff; color: inherit; }
+.vital-report-filters select { width: 130px; }
+.vital-report-page button { height: 40px; border: 1px solid #408961; border-radius: 8px; padding: 0 18px; background: #408961; color: white; font: inherit; font-weight: 600; cursor: pointer; }
+.vital-report-page button.secondary { background: #f0f7f2; color: #35764f; border-color: #c9ddce; }
+.vital-report-page button:disabled { opacity: .5; cursor: default; }
+.vital-report-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+.vital-report-toolbar h2 { margin: 0; }
+.vital-report-toolbar small { font-size: 14px; font-weight: normal; }
+.vital-report-actions { display: flex; align-items: center; gap: 12px; }
+.vital-report-table-scroll { max-height: max(240px, calc(100dvh - 370px)); overflow: auto; border: 1px solid #d8e7dd; border-radius: 8px; }
+.vital-report-page table { width: 100%; border-collapse: collapse; text-align: center; font-size: 15px; }
+.vital-report-page th { position: sticky; top: 0; background: #edf5ef; padding: 10px; color: #385a43; }
+.vital-report-page td { padding: 7px 10px; border-top: 1px solid #e4ede6; height: 40px; }
+.vital-report-page tr.unavailable { background: #fafbf9; color: #777; }
+.vital-report-page input[type=checkbox] { width: 20px; height: 20px; accent-color: #408961; vertical-align: middle; }
+.vital-report-page input:focus-visible, .vital-report-page select:focus-visible, .vital-report-page button:focus-visible { outline: 3px solid #91c5a1; outline-offset: 2px; }
+.vital-report-help, .vital-report-empty { color: #627368; font-size: 14px; }
+.vital-report-help { margin: 12px 0 0; }
+.vital-report-notice, .vital-report-error { margin: 0; padding: 10px 14px; border-radius: 8px; background: #edf7ef; }
+.vital-report-error { color: #923737; background: #fff0ee; }
