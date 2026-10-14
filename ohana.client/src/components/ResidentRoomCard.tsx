@@ -18,18 +18,25 @@ export function RoomButton({ prefix, room, selectedResident, phase, onClick, onS
     const isSelected = selectedResident?.roomNo === room.roomNumber;
     const available = phase === 'ready' && room.residents.length > 0;
     return (
-        <div className={`${prefix}-room${isSelected ? ` ${prefix}-room--selected` : ''}${!available ? ` ${prefix}-room--unavailable` : ''}`} aria-label={`${room.roomNumber}号室`}>
-            <button type="button" className={`${prefix}-room__number`} disabled={!available} aria-label={`${room.roomNumber}号室の利用者を選択`} onClick={() => onClick(room)}>{room.roomNumber}</button>
-            <div className={`${prefix}-room__resident`}>
+        <button type="button" className={`${prefix}-room${isSelected ? ` ${prefix}-room--selected` : ''}${!available ? ` ${prefix}-room--unavailable` : ''}`}
+            disabled={!available} aria-label={`${room.roomNumber}号室の利用者を選択${available ? `（${room.residents.map(resident => `${resident.tenantName}様`).join('、')}）` : ''}`}
+            aria-pressed={isSelected} aria-haspopup={available && room.residents.length > 1 ? 'dialog' : undefined}
+            onClick={() => {
+                if (!available) return;
+                if (room.residents.length === 1) onSelect(room, room.residents[0]);
+                else onClick(room);
+            }}>
+            <span className={`${prefix}-room__number`}>{room.roomNumber}</span>
+            <span className={`${prefix}-room__resident`}>
                 <strong>
                     {phase !== 'ready' ? <span>{phase === 'loading' ? '取得中' : '未取得'}</span> : room.residents.length === 0 ? <span>空室</span> : room.residents.map(resident => {
                         const selected = selectedResident !== null && residentSelectionKey(resident) === residentSelectionKey(selectedResident);
-                        return <button key={residentSelectionKey(resident)} type="button" className={`${prefix}-resident-name${selected ? ` ${prefix}-resident-name--selected` : ''}`} aria-pressed={selected} aria-label={`${room.roomNumber}号室 連番${resident.serialNo} ${resident.tenantName}様を選択`} title={`${resident.tenantName} 様`} onClick={() => onSelect(room, resident)}><span className={`${prefix}-resident-name-text`}>{resident.tenantName}</span><span className={`${prefix}-resident-honorific`}>様</span></button>;
+                        return <span key={residentSelectionKey(resident)} className={`${prefix}-resident-name${selected ? ` ${prefix}-resident-name--selected` : ''}`} title={`${resident.tenantName} 様`}><span className={`${prefix}-resident-name-text`}>{resident.tenantName}</span><span className={`${prefix}-resident-honorific`}>様</span></span>;
                     })}
                 </strong>
                 <small>{phase === 'ready' ? `入居者 ${room.residents.length}名` : phase === 'loading' ? '取得中' : '未取得'}</small>
-            </div>
-        </div>
+            </span>
+        </button>
     );
 }
 
