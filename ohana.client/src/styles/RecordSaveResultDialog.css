@@ -1,0 +1,61 @@
+.record-save-result {
+    --result-accent: #508e32;
+    --result-soft: #edf6e6;
+    box-sizing: border-box;
+    width: min(540px, calc(100vw - 32px));
+    max-height: calc(100vh - 32px);
+    max-height: calc(100svh - 32px);
+    max-height: calc(100dvh - 32px);
+    margin: auto;
+    padding: 32px;
+    overflow: auto;
+    overscroll-behavior: contain;
+    border: 1px solid #d9e4d2;
+    border-radius: 22px;
+    background: #fff;
+    color: #243323;
+    box-shadow: 0 24px 64px #17261655;
+    font-family: "Yu Gothic UI", "Meiryo", sans-serif;
+    text-align: center;
+}
+.record-save-result::backdrop { background: #0009; }
+.record-save-result--error { --result-accent: #bd4141; --result-soft: #fff0ef; }
+.record-save-result--warning { --result-accent: #986415; --result-soft: #fff5df; }
+.record-save-result__icon {
+    display: grid;
+    place-items: center;
+    width: 88px;
+    height: 88px;
+    margin: 0 auto 22px;
+    border-radius: 50%;
+    background: var(--result-soft);
+    color: var(--result-accent);
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 1;
+}
+.record-save-result h2 { margin: 0; font-size: 28px; line-height: 1.35; }
+.record-save-result p { margin: 16px 0 26px; font-size: 18px; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; }
+.record-save-result__close {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    min-height: 60px;
+    padding: 12px 20px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--result-accent);
+    color: #fff;
+    font: inherit;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+.record-save-result__close:focus-visible { outline: 3px solid #1fa39e; outline-offset: 3px; }
+@media (max-width: 480px), (max-height: 500px) {
+    .record-save-result { padding: 20px; }
+    .record-save-result__icon { width: 72px; height: 72px; margin-bottom: 16px; font-size: 52px; }
+    .record-save-result h2 { font-size: 24px; }
+    .record-save-result p { margin-bottom: 20px; font-size: 17px; }
+}

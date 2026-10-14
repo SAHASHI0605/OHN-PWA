@@ -1,10 +1,11 @@
 import { useRecordInput } from '../hooks/useRecordInput';
-import { RecordErrorDialog } from '../components/RecordErrorDialog';
+import { RecordSaveResultDialog } from '../components/RecordSaveResultDialog';
 import { japanTime } from '../utilities/recordDate';
 import type { MealType } from '../services/recordService';
 import { RecordInputField } from '../components/RecordInputField';
 import {
     useEffect,
+    useRef,
     useState,
 } from 'react';
 
@@ -56,8 +57,9 @@ function RecordInputPage() {
     const { user } = useAuth();
     const locationState = location.state as RecordLocationState | null;
     const [currentDate,setCurrentDate] = useState(()=>new Date());
+    const saveOpener = useRef<HTMLButtonElement>(null);
     useEffect(()=>{const timer=window.setInterval(()=>setCurrentDate(new Date()),1000);return()=>window.clearInterval(timer);},[]);
-    const { targetDate,scope,phase,loadError,caregiverError,caregivers,saving,success,failure,closeFailure,fieldError,records,
+    const { targetDate,scope,phase,loadError,caregiverError,caregivers,saving,success,closeSuccess,failure,closeFailure,fieldError,records,
         mealType,setMealType,riceAmount,setRiceAmount,sideDishAmount,setSideDishAmount,medication,setMedication,eyeDrops,setEyeDrops,oralCare,setOralCare,memo,setMemo,
         vitalForm,bathForm,handleVitalChange,handleBathChange,handleMoveDate,handleMealSave,handleVitalSave,handleBathSave } = useRecordInput(locationState);
     const residentName = records?.tenantName ?? locationState?.residentName ?? '利用者名未取得';
@@ -154,7 +156,7 @@ function RecordInputPage() {
                             </h2>
 
                             <p>
-                                <span role={phase==='error'||phase==='invalid'||caregiverError?'alert':'status'} className={phase==='error'||phase==='invalid'||caregiverError?'record-feedback--error':''}>{phase==='error'||phase==='invalid'?loadError:phase==='loading'?'記録を取得しています…':caregiverError?`介護者一覧：${caregiverError}`:saving?'記録を保存しています…':success||'対象日を確認して記録してください。'}</span>
+                                <span role={phase==='error'||phase==='invalid'||caregiverError?'alert':'status'} className={phase==='error'||phase==='invalid'||caregiverError?'record-feedback--error':''}>{phase==='error'||phase==='invalid'?loadError:phase==='loading'?'記録を取得しています…':caregiverError?`介護者一覧：${caregiverError}`:saving?'記録を保存しています…':'対象日を確認して記録してください。'}</span>
                             </p>
                         </div>
 
@@ -250,7 +252,7 @@ function RecordInputPage() {
                                     type="button"
                                     className="record-save-button"
                                     onClick={
-                                        handleMealSave
+                                        event => { saveOpener.current = event.currentTarget; handleMealSave(); }
                                     }
                                 >
                                     {saving === 'meal' ? '保存中…' : '記録'}
@@ -339,7 +341,7 @@ function RecordInputPage() {
                                     type="button"
                                     className="record-save-button"
                                     onClick={
-                                        handleVitalSave
+                                        event => { saveOpener.current = event.currentTarget; handleVitalSave(); }
                                     }
                                 >
                                     保存
@@ -417,7 +419,7 @@ function RecordInputPage() {
                                     type="button"
                                     className="record-save-button"
                                     onClick={
-                                        handleBathSave
+                                        event => { saveOpener.current = event.currentTarget; handleBathSave(); }
                                     }
                                 >
                                     保存
@@ -465,7 +467,11 @@ function RecordInputPage() {
 
                 </section>
             </div>
-            {failure && !failure.dismissed && <RecordErrorDialog message={failure.message} onClose={closeFailure} />}
+            {saving === null && ((failure && !failure.dismissed) || success) && <RecordSaveResultDialog
+                kind={failure && !failure.dismissed ? success ? 'warning' : 'error' : 'success'}
+                message={failure && !failure.dismissed ? failure.message : undefined}
+                onRestoreFocus={() => { if (saveOpener.current?.isConnected) saveOpener.current.focus(); }}
+                onClose={() => { closeFailure(); closeSuccess(); }} />}
         </main>
     );
 }

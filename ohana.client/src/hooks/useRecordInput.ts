@@ -88,7 +88,7 @@ export function useRecordInput(resident: RecordResidentState | null) {
         } finally {lock.current=false;setSaving(null);}
     };
     return {targetDate,scope,phase,loadError:!validKey?'入居者識別情報が不足しています。入居者選択画面から選び直してください。':active?.error??'',caregiverError,caregivers,saving,
-        success:success?.scope===scope?success.message:'',failure:failure?.scope===scope?failure:null,closeFailure:()=>setFailure(current=>current?{...current,dismissed:true}:current),fieldError:(field:string,kind:RecordKind)=>failure?.scope===scope&&failure.kind===kind&&failure.field===field?failure.message:undefined,
+        success:success?.scope===scope?success.message:'',closeSuccess:()=>setSuccess(null),failure:failure?.scope===scope?failure:null,closeFailure:()=>setFailure(current=>current?{...current,dismissed:true}:current),fieldError:(field:string,kind:RecordKind)=>failure?.scope===scope&&failure.kind===kind&&failure.field===field?failure.message:undefined,
         handleMoveDate:(delta:number)=>{epoch.current++;setSuccess(null);setFailure(null);setTargetDate(value=>nextCalendarDate(value,delta));},
         records:active?.data??null,mealType:type,setMealType,riceAmount:meal.riceAmount,setRiceAmount:(value:string)=>updateMeal('riceAmount',value),sideDishAmount:meal.sideDishAmount,setSideDishAmount:(value:string)=>updateMeal('sideDishAmount',value),medication:meal.medication,setMedication:(value:string)=>updateMeal('medication',value),eyeDrops:meal.eyeDrops,setEyeDrops:(value:string)=>updateMeal('eyeDrops',value),oralCare:meal.oralCare,setOralCare:(value:string)=>updateMeal('oralCare',value),memo:meal.memo,setMemo:(value:string)=>updateMeal('memo',value),
         vitalForm:vital,bathForm:bath,handleVitalChange,handleBathChange,
