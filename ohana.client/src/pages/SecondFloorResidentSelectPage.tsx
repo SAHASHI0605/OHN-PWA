@@ -268,19 +268,6 @@ function SecondFloorResidentSelectPage() {
                     {phase === 'loading' && <p className="second-floor-load-status" role="status">入居者情報を取得中…</p>}
                     {phase === 'error' && <p className="second-floor-load-error" role="alert">{loadError}</p>}
                     <div className="second-floor-map-card" aria-busy={phase === 'loading'}>
-                        <div className="second-floor-map-heading">
-                            <strong>
-                                2F
-                            </strong>
-
-                            <div>
-                                東
-                                <span>
-                                    ↑
-                                </span>
-                            </div>
-                        </div>
-
                         <div className="second-floor-map">
                             <div className="second-floor-residential-zone">
                                 <div className="second-floor-room-row second-floor-room-row--top">

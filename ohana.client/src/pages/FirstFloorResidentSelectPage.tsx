@@ -267,19 +267,6 @@ function FirstFloorResidentSelectPage() {
                     {phase === 'loading' && <p className="first-floor-load-status" role="status">入居者情報を取得中…</p>}
                     {phase === 'error' && <p className="first-floor-load-error" role="alert">{loadError}</p>}
                     <div className="first-floor-map-card" aria-busy={phase === 'loading'}>
-                        <div className="first-floor-map-heading">
-                            <strong>
-                                1F
-                            </strong>
-
-                            <div>
-                                東
-                                <span>
-                                    ↑
-                                </span>
-                            </div>
-                        </div>
-
                         <div className="first-floor-map">
                             <div className="first-floor-top-rooms">
                                 {topRooms.map(

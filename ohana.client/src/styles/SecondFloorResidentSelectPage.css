@@ -214,32 +214,6 @@
     box-shadow: 0 12px 28px rgba(72, 112, 29, 0.08);
 }
 
-.second-floor-map-heading {
-    margin: 0 2px 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-    .second-floor-map-heading strong {
-        color: #4f711f;
-        font-size: 22px;
-    }
-
-    .second-floor-map-heading > div {
-        min-width: 80px;
-        color: #426a36;
-        text-align: center;
-        font-weight: 900;
-    }
-
-    .second-floor-map-heading span {
-        display: block;
-        margin-top: -3px;
-        color: #1fa39e;
-        font-size: 19px;
-    }
-
 /*
  * 2階見取り図全体
  *
